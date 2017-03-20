@@ -50,7 +50,7 @@
 
 <div id="content">
 	
-    <form action="LoginServlet" method="post">
+    <form action="LoginServlet" method="post" id="login">
     	<label>Username: </label> <input type="text" name="username">
         
         <label>Password: </label> <input type="password" name="password">
