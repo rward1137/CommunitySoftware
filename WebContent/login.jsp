@@ -2,8 +2,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Welcome to Community Watch</title>
-	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" >
-	<link href="CSS/style.css" rel="stylesheet" type="text/css">
+
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" >
+<link href="CSS/style.css" rel="stylesheet" type="text/css"> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -19,25 +22,21 @@
         Anytown, NC 99999<br>
         (987)654-3210<br>
         
-        <a href="www.twitter.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('twitter','','images/icons/twitterhover.png',1)"><img src="images/icons/twitter.png" alt="Community Watch Twitter page" width="24" height="24" id="twitter"></a>
-        <a href="www.facebook.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('facebook','','images/icons/fbhover.png',1)"><img src="images/icons/fb.png" alt="Community Watch Facebook page" width="24" height="24" id="facebook"></a> 
-        <a href="www.instagram.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('instagram','','images/icons/instagramhover.png',1)"><img src="images/icons/instagram.png" alt="Community Watch Instagram page" width="24" height="24" id="instagram"></a>
+        <a href="http://www.twitter.com"><img src="images/icons/twitter.png" class="icon-image" alt="Community Watch Twitter page" ></a>
+      <a href="http://www.facebook.com"><img src="images/icons/fb.png" class="icon-image" alt="Community Watch Facebook page" ></a> 
+      <a href="http://www.instagram.com"><img src="images/icons/instagram.png" class="icon-image" alt="Community Watch Instagram page"></a>
         
     </section>
 </header>
 
 <div id="content">
 	<div id="formbox">
-		<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" >
-			<a href="#login" id="login-tab" role="tab" data-toggle="tab">Login</a>
-		</li>
-		<li role="presentation" class="active">
-			<a href="#register" role="tab" data-toggle="tab">Register</a>
-		</li>
+		<ul class="nav nav-tabs">
+		<li><a data-toggle="tab" href="#login">Login</a></li>
+		<li class="active"><a data-toggle="tab" href="#register">Register</a></li>
 	    </ul>
 	    <div class="tab-content">
-		<div class="tab-pane" role="tabpanel" id="login">
+		<div id="login" class="tab-pane fade">
 		    <form action="LoginServlet" method="post" id="log">
 			<label>Username: </label>
 			<input type="text" name="username"/>
@@ -46,13 +45,13 @@
 			<input type="submit" value="Login" id="logbutton"/>
 		    </form>
 		</div>
-		<div class="tab-pane active" role="tabpanel" id="register">
-		    <form action="../LoginServlet" method="post" id="reg">
+		<div class="tab-pane fade in active" id="register">
+		    <form action="RegisterServlet" method="post" id="reg">
 			<label>Full Name: </label>
 			<input type="text" name="first" class="nameinput" placeholder="First"/>
 			<input type="text" name="last" class="nameinput" placeholder="Last"/>
 			<label>Community ID: </label>
-			<input type="text" name="communityID">
+			<input type="text" name="communityID" placeholder="Wake Tech">
 			<label>Choose Username: </label>
 			<input type="text" name="username"/>
 			<label>Choose Password: </label>
@@ -82,9 +81,11 @@
     </section>
     
     <section id="footsocial">
-    	<a href="www.twitter.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('twitter2','','images/icons/twitterhover2.png',1)"><img src="images/icons/twitter.png" alt="Community Watch Twitter page" width="24" height="24" id="twitter2"></a> 
-        <a href="www.facebook.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Facebook2','','images/icons/fbhover2.png',1)"><img src="images/icons/fb.png" alt="Community Watch Facebook page" width="24" height="24" id="Facebook2"></a> 
-        <a href="www.instagram.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Instagram','','images/icons/instagramhover2.png',1)"><img src="images/icons/instagram.png" alt="Community Watch Instagram page" width="24" height="24" id="Instagram"></a> 
+    	
+        <a href="http://www.twitter.com"><img src="images/icons/twitter.png" class="icon-image" alt="Community Watch Twitter page" ></a>
+      <a href="http://www.facebook.com"><img src="images/icons/fb.png" class="icon-image" alt="Community Watch Facebook page" ></a> 
+      <a href="http://www.instagram.com"><img src="images/icons/instagram.png" class="icon-image" alt="Community Watch Instagram page"></a>
+        
         <br>
         <a href="mailto:CommunitySoftwareWakeTech@gmail.com">Contact Us</a>
     </section>
