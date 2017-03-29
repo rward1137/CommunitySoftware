@@ -23,6 +23,7 @@ header {
 
 #headlogo {
 	float: left;
+	width:100px;
 }
 
 #headcontact {
@@ -174,22 +175,50 @@ footer a {
 }
 
 footer a:hover {
-	color:#C3CE62;
+	color: #C3CE62;
 }
 
-#login {
-	margin-right: auto;
+#formbox {
+	width: 400px;
 	margin-left: auto;
-	margin-bottom: 20px;
-	width: 300px;
-	padding-top: 60px;
+	margin-right: auto;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 
-#login input {
-	margin: 10px;
-}
-
-#login label {
+label {
+	width: 120px;
+	float: left;
 	text-align: right;
+	margin: 5px;
 }
 
+input {
+	float: left;
+	width: 200px;
+	margin: 2px;
+}
+
+.addressinput {
+	margin-left: 132px;
+}
+
+.nameinput {
+	width: 98px;	
+}
+
+#regbutton {
+	clear:both;
+	float:none;
+	width: 70px;
+	margin-left: 165px;
+	margin-right: 165px;
+}
+
+#logbutton {
+	clear:both;
+	float:none;
+	width: 70px;
+	margin-left: 165px;
+	margin-right: 165px;
+}
