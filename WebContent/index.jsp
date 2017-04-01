@@ -1,34 +1,19 @@
-<html>
+<!doctype html>
+<html><!-- InstanceBegin template="/Templates/postlogin.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
-<title>Community Watch Homepage</title>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Welcome to Communtiy Watch</title>
+<!-- InstanceEndEditable -->
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="CSS/style.css" rel="stylesheet" type="text/css">
-<script type="text/javascript">
-function MM_swapImgRestore() { //v3.0
-  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
-}
-function MM_preloadImages() { //v3.0
-  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
-    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
-    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
-}
-
-function MM_findObj(n, d) { //v4.01
-  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
-    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
-  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
-  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
-  if(!x && d.getElementById) x=d.getElementById(n); return x;
-}
-
-function MM_swapImage() { //v3.0
-  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
-   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
-}
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- InstanceBeginEditable name="head" -->
+<!-- InstanceEndEditable -->
 </head>
 
-<body onLoad="MM_preloadImages('images/icons/fbhover.png','images/icons/twitterhover.png','images/icons/instagramhover.png','images/icons/twitterhover2.png','images/icons/fbhover2.png','images/icons/instagramhover2.png')">
+<body>
 
 <header>
     <img id="headlogo" src="images/logo.jpg" width="100" alt="community software logo"/> 
@@ -36,15 +21,15 @@ function MM_swapImage() { //v3.0
     Community Watch
     </section>
     
-    <section id="headcontact">
+  <section id="headcontact">
     
     	123 Main St<br>
         Anytown, NC 99999<br>
         (987)654-3210<br>
         
-        <a href="www.twitter.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('twitter','','images/icons/twitterhover.png',1)"><img src="images/icons/twitter.png" alt="Community Watch Twitter page" width="24" height="24" id="twitter"></a>
-        <a href="www.facebook.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('facebook','','images/icons/fbhover.png',1)"><img src="images/icons/fb.png" alt="Community Watch Facebook page" width="24" height="24" id="facebook"></a> 
-        <a href="www.instagram.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('instagram','','images/icons/instagramhover.png',1)"><img src="images/icons/instagram.png" alt="Community Watch Instagram page" width="24" height="24" id="instagram"></a>
+      <a href="http://www.twitter.com"><img src="images/icons/twitter.png" width="24" height="24" class="icon-image" alt="Community Watch Twitter page" ></a>
+      <a href="http://www.facebook.com"><img src="images/icons/fb.png" width="24" height="24" class="icon-image" alt="Community Watch Facebook page" ></a> 
+      <a href="http://www.instagram.com"><img src="images/icons/instagram.png" width="24" height="24" class="icon-image" alt="Community Watch Instagram page"></a>
         
     </section>
 </header>
@@ -53,31 +38,99 @@ function MM_swapImage() { //v3.0
 	
     <nav>
     	<ul>
-        	<li><a href="">Home</a></li>
-            <li><a href="">Event Log</a></li>
-            <li><a href="">Forum</a></li>
+        	<li><a href="index.html">Event Log</a></li>
+            <li><a href="forum.html">Forum</a></li>
             <li class="dropdown">
             	<a href="" class="dropbtn">Account</a>
                 <div class="dropdown-content">
-                	<a href="">Profile</a>
-                    <a href="">Settings</a>
-                    <a href="">Forum Posts</a>
-                    <a href="">Messages</a>
-                    <a href="">Log Out</a>
+                	<a href="profile.html">Profile</a>
+                    <a href="settings.html">Settings</a>
+                    <a href="forum.html">Forum Posts</a>
+                    <a href="message.html">Messages</a>
+                    <a href="login.html">Log Out</a>
                 </div>
                 
             </li>
         </ul>
     </nav>
+    <!-- InstanceBeginEditable name="main" -->
+    <div id="main-content">
+    <h5>Welcome to your Community Watch homepage</h5>
+    <iframe
+      width="525"
+      height="330"
+      frameborder="0" style="border:0"
+      src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAbu0vFOsoNXKcPaiPWE52yn7X4ixGpi_o&q=Wake+Tech+Community+College" allowfullscreen>
+	</iframe>
     
-    
-    <div id="main-content"><br>
-    Welcome to the community watch homepage
     </div>
     
     <aside><br>
-    Here's where we'll put<br>the side bar content
+    	<ul class="nav nav-tabs">
+        	<li class="active"><a data-toggle="tab" href="#recent">Recent Events</a></li>
+            <li><a data-toggle="tab" href="#new">New Event</a></li>
+        </ul>
+        <div class="tab-content">
+        	<div id="recent" class="tab-pane fade in active">
+            	<div id="recent-events">
+            		<table width="250">
+  					 <tbody>
+                        <tr>
+                          <td>description @ placeID<br>(link to map marker?)</td>
+                        </tr>
+                        <tr>
+                          <td>description @ placeID</td>
+                        </tr>
+                        <tr>
+                          <td>description @ placeID</td>
+                        </tr>
+                        <tr>
+                          <td>description @ placeID</td>
+                        </tr>
+                        <tr>
+                          <td>description @ placeID</td>
+                        </tr>
+                      </tbody>
+                    </table>
+				</div>
+            </div>
+            <div id="new" class="tab-pane fade">
+            <form id="log-event">
+            <h5>Log New Event</h5>
+                <label>Location:</label>
+                <input type="text" placeholder="google places">
+                <p id="event-radio">
+                  <label>
+                    <input type="radio" name="event-type" value="theft" id="theft">
+                    Theft</label>
+                  <br>
+                  <label>
+                    <input type="radio" name="event-type" value="vandal" id="vandal">
+                    Vandalism</label>
+                  <br>
+                  <label>
+                    <input type="radio" name="event-type" value="breakin" id="breakin">
+                    Break-in</label>
+                  <br>
+                  <label>
+                    <input type="radio" name="event-type" value="assault" id="assault">
+                    Assault</label>
+                  <br>
+                  <label>
+                    <input type="radio" name="event-type" value="suspicious" id="Suspicious">
+                    Suspicious Activity</label>
+                  <br>
+                </p>
+                <label>Event description: </label>
+                <textarea cols="28" rows="2"></textarea>
+                <div id="anonbox">
+                <input type="checkbox"> <label>Remain Anonymous</label></div>
+                <input name="eventbutton" type="submit" id="eventbutton">
+            </form>
+			</div>
+		</div>
     </aside>
+    <!-- InstanceEndEditable -->
 
 
 </div>
@@ -88,9 +141,9 @@ function MM_swapImage() { //v3.0
     </section>
     
     <section id="footsocial">
-    	<a href="www.twitter.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('twitter2','','images/icons/twitterhover2.png',1)"><img src="images/icons/twitter.png" alt="Community Watch Twitter page" width="24" height="24" id="twitter2"></a> 
-        <a href="www.facebook.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Facebook2','','images/icons/fbhover2.png',1)"><img src="images/icons/fb.png" alt="Community Watch Facebook page" width="24" height="24" id="Facebook2"></a> 
-        <a href="www.instagram.com" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Instagram','','images/icons/instagramhover2.png',1)"><img src="images/icons/instagram.png" alt="Community Watch Instagram page" width="24" height="24" id="Instagram"></a> 
+    	<a href="http://www.twitter.com"><img src="images/icons/twitter.png" width="24" height="24" class="icon-image" alt="Community Watch Twitter page" ></a>
+      <a href="http://www.facebook.com"><img src="images/icons/fb.png" width="24" height="24" class="icon-image" alt="Community Watch Facebook page" ></a> 
+      <a href="http://www.instagram.com"><img src="images/icons/instagram.png" width="24" height="24" class="icon-image" alt="Community Watch Instagram page"></a>
         <br>
         <a href="mailto:CommunitySoftwareWakeTech@gmail.com">Contact Us</a>
     </section>
@@ -104,4 +157,4 @@ function MM_swapImage() { //v3.0
 </footer>
 
 </body>
-</html>
+<!-- InstanceEnd --></html>
