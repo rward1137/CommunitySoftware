@@ -36,16 +36,23 @@ header {
 }
 
 #headcontact img {
-	margin-top: 5px;
-	padding: 4px;
+	margin-top:6px;
+}
+
+.icon-image {
+	margin:2px;
+}
+
+.icon-image:hover {
+	opacity:.6;
 }
 
 nav {
 	width: 800px;
-	height: 30px;
+	height: 28px;
 	list-style: none;
 	background-color:#393939;
-	padding-top: 10px;
+	padding-top: 5px;
 	text-align: center;
 }
 
@@ -53,7 +60,6 @@ nav ul {
 	padding-left: 0px;
 	padding: 0px;
 	margin: auto;
-	overflow: hidden;
 	list-style-type: none;
 }
 
@@ -68,6 +74,7 @@ nav a, .dropbtn {
 	color: #C3CE62;
 	text-align: center;
 	text-decoration: none;
+	z-index: 999;
 }
 
 nav a:hover {
@@ -77,6 +84,7 @@ nav a:hover {
 li.dropdown {
 	display: inline-block;
 	color: #C3CE62;
+	z-index: 999;
 }
 
 .dropdown-content {
@@ -85,7 +93,7 @@ li.dropdown {
 	background-color: #FFFFFF;
 	min-width: 100px;
 	box-shadow: 0px 8px 8px 0px #000000;
-	z-index: 1;
+	z-index: 999;
 }
 
 .dropdown-content a {
@@ -95,6 +103,7 @@ li.dropdown {
 	display: block;
 	text-align: left;
 	font-size: 12px;
+	z-index: 999;
 }
 
 
@@ -105,6 +114,7 @@ li.dropdown {
 
 .dropdown:hover .dropdown-content {
 	display: block;
+	z-index: 999;
 }
 
 #content {
@@ -118,42 +128,40 @@ li.dropdown {
 }
 
 #main-content {
-	min-height: 350px;
+	min-height: 355px;
 	width: 525px;
-	margin: 5px;
 	float: left;
-	font-size:12px;
+	font-size: 12px;
 	text-align: center;
 }
 
 aside {
-	min-height: 350px;
-	width: 255px;
-	margin: 5px;
+	min-height: 355px;
+	width: 265px;
 	float: right;
-	font-size:12px;
+	font-size: 12px;
 	text-align: center;
 }
 
 footer {
 	height: 60px;
 	width: 800px;
+	padding-top: 10px;
 	font-size: 12px;
 	font-weight: bold;
 	color: #3A3A3A;
+	min-height: 0px;
 }
 
 #footcopy {
 	width: 200px;
-	margin-top: 10px;
 	margin-left: 20px;
 	margin-right: 20px;
 	float: left;
 }
 
 #footsocial {
-	width: 100px;
-	margin-top: 10px;
+	width: 120px;
 	margin-right: 20px;
 	margin-left: 20px;
 	text-align: center;
@@ -162,7 +170,6 @@ footer {
 
 #footcontact {
 	width: 150px;
-	margin-top: 10px;
 	margin-right: 100px;
 	margin-left: 100px;
 	text-align: center;
@@ -186,39 +193,63 @@ footer a:hover {
 	padding-bottom: 50px;
 }
 
-label {
+#formbox label {
 	width: 120px;
 	float: left;
 	text-align: right;
 	margin: 5px;
 }
 
-input {
+#formbox input {
 	float: left;
 	width: 200px;
 	margin: 2px;
 }
 
-.addressinput {
+#formbox .addressinput {
 	margin-left: 132px;
 }
 
-.nameinput {
+#formbox .nameinput {
 	width: 98px;	
 }
 
-#regbutton {
+#formbox #regbutton {
 	clear:both;
+	width: 100px;
 	float:none;
-	width: 70px;
-	margin-left: 165px;
-	margin-right: 165px;
 }
 
-#logbutton {
+#formbox #logbutton {
 	clear:both;
 	float:none;
-	width: 70px;
-	margin-left: 165px;
-	margin-right: 165px;
+	width: 80px;
+}
+
+#log-event #eventbutton {
+	clear:both;
+	float:none;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#formbox #to-reg {
+	width: 80px;
+	clear:both;
+	float:none;
+}
+
+#event-radio {
+	padding-left:100px;
+	text-align:left;
+}
+
+#recent-events {
+	text-align:left;
+	padding-left: 20px;
+	padding-bottom:10px;
+}
+
+#recent-events td{
+	padding-top: 10px;
 }
