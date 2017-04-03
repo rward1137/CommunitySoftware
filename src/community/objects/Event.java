@@ -1,8 +1,10 @@
 package community.objects;
 
+
+
 public class Event {
 	private int eventID;
-	private java.util.Date date;
+	private String date;
 	private int markerID;
 	private int userID;
 	private String details;
@@ -11,7 +13,7 @@ public class Event {
 
 	public Event() {}
 	
-	public Event(boolean anonymous, java.util.Date date, int priority, int user, 
+	public Event(boolean anonymous, String date, int priority, int user, 
 				int marker, int eventId, String details) {
 		anon = anonymous;
 		this.date = date;
@@ -23,10 +25,17 @@ public class Event {
 	}
 	
 	public int getID() { return eventID; }
+	public void setID(int id) { eventID = id; }
 	public int getMarker() { return markerID; }
+	public void setMarker(int id) { markerID = id; }
 	public int getUser() { return userID; }
+	public void setUser(int id) { userID = id; }
 	public int getPriorityLevel() { return priorityLevelID; }
-	public java.util.Date createdOn() { return date; }
+	public void setPriorityLevel(int id) { priorityLevelID = id; }
+	public String createdOn() { return date; }
+	public void setDate(String date) { this.date = date; }
 	public String getDetails() { return details; }
+	public void setDetails(String d) { details = d; }
 	public boolean wasLoggedAnonymously() { return anon; }
+	public void setAnon(boolean a) { anon = a; }
 }

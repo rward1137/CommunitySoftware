@@ -59,6 +59,7 @@ public class RegistrationServlet extends HttpServlet {
 		
 		// get database connection
 		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			connect = DriverManager.getConnection("jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=CommunitySoftware;IntegratedSecurity=true;");
 			stmt = connect.createStatement();
 			
@@ -106,8 +107,6 @@ public class RegistrationServlet extends HttpServlet {
 				
 				// Prepare User insertion statement
 				prep = connect.prepareStatement("EXEC sp_NewUser ?, ?, ?, ?, ?, ?, ?, ?, ?");
-				// ID
-				//prep.setInt(1, userID);
 				// username
 				prep.setString(1, username);
 				// userpassword
@@ -142,7 +141,11 @@ public class RegistrationServlet extends HttpServlet {
 		}
 		catch (SQLException s) { s.printStackTrace(); }
 		catch (IOException i) { i.printStackTrace(); }
-		catch (ServletException v) { v.printStackTrace(); }
+		catch (ServletException v) { v.printStackTrace(); } 
+		catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 }

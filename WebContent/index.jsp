@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Welcome to Communtiy Watch</title>
+<title>Welcome to Community Watch</title>
 <!-- InstanceEndEditable -->
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="CSS/style.css" rel="stylesheet" type="text/css">
@@ -14,6 +14,20 @@
 </head>
 
 <body>
+<%
+//allow access only if session exists
+if(session.getAttribute("user") == null){
+	response.sendRedirect("login.jsp");
+}
+String userName = null;
+String sessionID = null;
+Cookie[] cookies = request.getCookies();
+if(cookies !=null){
+	for(Cookie cookie : cookies){
+		if(cookie.getName().equals("user")) userName = cookie.getValue();
+	}
+}
+%>
 
 <header>
     <img id="headlogo" src="images/logo.jpg" width="100" alt="community software logo"/> 
@@ -47,7 +61,10 @@
                     <a href="settings.html">Settings</a>
                     <a href="forum.html">Forum Posts</a>
                     <a href="message.html">Messages</a>
-                    <a href="login.html">Log Out</a>
+                    <form action="LogoutServlet" method="post">
+                    <input type="submit" value="Logout" />
+                    </form>
+                    <!--  a href="login.jsp">Log Out</a -->
                 </div>
                 
             </li>
@@ -64,6 +81,46 @@
 	</iframe>
     
     </div>
+
+<%@ page import="community.objects.Event" %> 
+<% 
+java.sql.Connection connect;
+java.sql.Statement stmt;
+java.sql.ResultSet result;
+java.sql.PreparedStatement prep;
+java.util.ArrayList<Event> events = new java.util.ArrayList<>();
+Event tempEvent;
+int mostRecentEvent = 0;
+
+try{
+	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+	connect = java.sql.DriverManager.getConnection("jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=CommunitySoftware;IntegratedSecurity=true;");
+	stmt = connect.createStatement();
+	
+	result = stmt.executeQuery("select ID from events");
+	while (result.next()) {mostRecentEvent = Integer.parseInt(result.getString("ID")); }
+//	System.out.println(mostRecentEvent);
+	mostRecentEvent = mostRecentEvent - 4;
+//	System.out.println(mostRecentEvent);
+	
+	result = stmt.executeQuery("select * from events where ID >= " + mostRecentEvent);
+	while (result.next()) {
+	//	System.out.println(result.getString("Details"));
+		tempEvent = new Event();
+		tempEvent.setID(Integer.parseInt(result.getString("ID")));
+		tempEvent.setDate(result.getString("EventDate"));
+		tempEvent.setMarker(Integer.parseInt(result.getString("MarkerID")));
+		tempEvent.setUser(Integer.parseInt(result.getString("UserID")));
+		tempEvent.setDetails(result.getString("Details"));
+		tempEvent.setAnon(false);
+		tempEvent.setPriorityLevel(Integer.parseInt(result.getString("PriorityLevelID")));
+		events.add(tempEvent);
+	}
+}
+catch(ClassNotFoundException c){ c.printStackTrace();}
+catch(java.sql.SQLException s) { s.printStackTrace(); }
+
+%>
     
     <aside><br>
     	<ul class="nav nav-tabs">
@@ -76,29 +133,44 @@
             		<table width="250">
   					 <tbody>
                         <tr>
-                          <td>description @ placeID<br>(link to map marker?)</td>
+                          <!-- MOST RECENT EVENT -->
+                          <td><%= events.get(4).getID() %> </td>
+                          <td><%= events.get(4).getDetails() %></td>
+                          <td><%= events.get(4).createdOn() %> </td>
                         </tr>
                         <tr>
-                          <td>description @ placeID</td>
+                          <!-- 2ND MOST RECENT -->
+                          <td><%= events.get(3).getID() %> </td>
+                          <td><%= events.get(3).getDetails() %></td>
+                          <td><%= events.get(3).createdOn() %> </td>
                         </tr>
                         <tr>
-                          <td>description @ placeID</td>
+                          <!-- 3RD MOST RECENT -->
+                          <td><%= events.get(2).getID() %> </td>
+                          <td><%= events.get(2).getDetails() %></td>
+                          <td><%= events.get(2).createdOn() %> </td>
                         </tr>
                         <tr>
-                          <td>description @ placeID</td>
+                          <!-- 4TH MOST RECENT -->
+                          <td><%= events.get(1).getID() %> </td>
+                          <td><%= events.get(1).getDetails() %></td>
+                          <td><%= events.get(1).createdOn() %> </td>
                         </tr>
                         <tr>
-                          <td>description @ placeID</td>
+                          <!-- 5TH MOST RECENT -->
+                          <td><%= events.get(0).getID() %> </td>
+                          <td><%= events.get(0).getDetails() %></td>
+                          <td><%= events.get(0).createdOn() %> </td>
                         </tr>
                       </tbody>
                     </table>
 				</div>
             </div>
             <div id="new" class="tab-pane fade">
-            <form id="log-event">
+            <form action="EventServlet" method="post" id="log-event">
             <h5>Log New Event</h5>
                 <label>Location:</label>
-                <input type="text" placeholder="google places">
+                <input type="text" name="location" placeholder="google places">
                 <p id="event-radio">
                   <label>
                     <input type="radio" name="event-type" value="theft" id="theft">
@@ -122,9 +194,9 @@
                   <br>
                 </p>
                 <label>Event description: </label>
-                <textarea cols="28" rows="2"></textarea>
+                <textarea cols="28" rows="2" name="description"></textarea>
                 <div id="anonbox">
-                <input type="checkbox"> <label>Remain Anonymous</label></div>
+                <input type="checkbox" name="anon"> <label>Remain Anonymous</label></div>
                 <input name="eventbutton" type="submit" id="eventbutton">
             </form>
 			</div>

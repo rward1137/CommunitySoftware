@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 		username = request.getParameter("username"); 
 		password = request.getParameter("password");
 		passencrypt = new BasicPasswordEncryptor();
-		String a = "";
+
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			connect = DriverManager.getConnection("jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=CommunitySoftware;IntegratedSecurity=true;");
