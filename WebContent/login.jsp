@@ -114,7 +114,7 @@
 	}
   }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&libraries=places&callback=initAutocomplete"
+<script src="https://maps.googleapis.com/maps/api/js?key=KEY_HERE&libraries=places&callback=initAutocomplete"
         async defer></script>
 </body>
 </html>
