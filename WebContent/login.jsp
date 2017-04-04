@@ -22,10 +22,6 @@
         Anytown, NC 99999<br>
         (987)654-3210<br>
         
-        <a href="http://www.twitter.com"><img src="images/icons/twitter.png" class="icon-image" alt="Community Watch Twitter page" ></a>
-      <a href="http://www.facebook.com"><img src="images/icons/fb.png" class="icon-image" alt="Community Watch Facebook page" ></a> 
-      <a href="http://www.instagram.com"><img src="images/icons/instagram.png" class="icon-image" alt="Community Watch Instagram page"></a>
-        
     </section>
 </header>
 
@@ -48,45 +44,34 @@
 		<div class="tab-pane fade in active" id="register">
 		    <form action="RegisterServlet" method="post" id="reg">
 			<label>Full Name: </label>
-			<input type="text" name="first" class="nameinput" placeholder="First"/>
-			<input type="text" name="last" class="nameinput" placeholder="Last"/>
+			<input type="text" name="first" class="nameinput" placeholder="First" />
+			<input type="text" name="last" class="nameinput" placeholder="Last" />
 			<label>Community ID: </label>
-			<input type="text" name="communityID" placeholder="Wake Tech">
+			<input type="text" name="communityID" placeholder="Wake Tech" />
 			<label>Choose Username: </label>
-			<input type="text" name="username"/>
+			<input type="text" name="username" />
 			<label>Choose Password: </label>
-			<input type="password" name="password"/>
+			<input type="password" name="password" />
 			<label>Confirm Password: </label>
-			<input type="password" name="password"/>
+			<input type="password" name="password" />
 			<label>Email Address: </label>
-			<input type="email" name="email"/>
-			<label>Home Address: </label> <br>
-			<input type="text" name="street" placeholder="Street"/>
-			<input type="text" name="apt" class="addressinput" placeholder="Apartment"/>
-			<input type="text" name="city" class="addressinput" placeholder="City"/>
-			<input type="text" name="state" class="addressinput" placeholder="State"/>
-			<input type="text" name="zip" class="addressinput" placeholder="Zip code"/>
-			<input type="text" name="county" class="addressinput" placeholder="County"/>
-
+			<input type="email" name="email" />
+			<label>Home Address: </label> 
+			<input id="autocomplete" placeholder="Enter your address" onFocus="geolocate()" type="text" ></input>
+			<input type="text" id="address-lat" hidden="true"/>
+			<input type="text" id="address-lng" hidden="true"/>
 			<input type="submit" value="Register" id="regbutton"/>
-		    </form>
+		    </form>  
 		</div>
 	    </div>
 	</div>
 </div>
-
 <footer>
     <section id="footcopy">
 	&copy; Community Software 2017
     </section>
     
     <section id="footsocial">
-    	
-        <a href="http://www.twitter.com"><img src="images/icons/twitter.png" class="icon-image" alt="Community Watch Twitter page" ></a>
-      <a href="http://www.facebook.com"><img src="images/icons/fb.png" class="icon-image" alt="Community Watch Facebook page" ></a> 
-      <a href="http://www.instagram.com"><img src="images/icons/instagram.png" class="icon-image" alt="Community Watch Instagram page"></a>
-        
-        <br>
         <a href="mailto:CommunitySoftwareWakeTech@gmail.com">Contact Us</a>
     </section>
     
@@ -95,9 +80,41 @@
         Anytown, NC 99999<br>
         (987)654-3210<br> 
     </section>
-
 </footer>
-
+<script>
+	var placeSearch, autocomplete;
+	
+	function initAutocomplete() {
+		autocomplete = new google.maps.places.Autocomplete(
+			(document.getElementById('autocomplete')),
+			{types: ['geocode']});
+			
+		autocomplete.addListener('place_changed', getAddressData);
+	}
+	
+	function getAddressData() {
+	  var place = autocomplete.getPlace();
+	  document.getElementById('address-lat').value = (place.geometry[0][0]);
+	  document.getElementById('address-lng').value = (place.geometry[0][1]);
+	}
+	
+	function geolocate() {
+	if (navigator.geolocation) {
+	  navigator.geolocation.getCurrentPosition(function(position) {
+		var geolocation = {
+		  lat: position.coords.latitude,
+		  lng: position.coords.longitude
+		};
+		var circle = new google.maps.Circle({
+		  center: geolocation,
+		  radius: position.coords.accuracy
+		});
+		autocomplete.setBounds(circle.getBounds());
+	  });
+	}
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&libraries=places&callback=initAutocomplete"
+        async defer></script>
 </body>
-
 </html>
