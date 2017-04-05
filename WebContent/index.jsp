@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <!-- InstanceBeginEditable name="doctitle" -->
-<title>Welcome to Community Watch</title>
+<title>Welcome to Communtiy Watch</title>
 <!-- InstanceEndEditable -->
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="CSS/style.css" rel="stylesheet" type="text/css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- InstanceBeginEditable name="head" -->
-<!-- InstanceEndEditable -->
 </head>
 
 <body>
+
 <%
 //allow access only if session exists
 if(session.getAttribute("user") == null){
@@ -36,14 +35,6 @@ if(cookies !=null){
     </section>
     
   <section id="headcontact">
-    
-    	123 Main St<br>
-        Anytown, NC 99999<br>
-        (987)654-3210<br>
-        
-      <a href="http://www.twitter.com"><img src="images/icons/twitter.png" width="24" height="24" class="icon-image" alt="Community Watch Twitter page" ></a>
-      <a href="http://www.facebook.com"><img src="images/icons/fb.png" width="24" height="24" class="icon-image" alt="Community Watch Facebook page" ></a> 
-      <a href="http://www.instagram.com"><img src="images/icons/instagram.png" width="24" height="24" class="icon-image" alt="Community Watch Instagram page"></a>
         
     </section>
 </header>
@@ -53,35 +44,15 @@ if(cookies !=null){
     <nav>
     	<ul>
         	<li><a href="index.html">Event Log</a></li>
-            <li><a href="forum.html">Forum</a></li>
-            <li class="dropdown">
-            	<a href="" class="dropbtn">Account</a>
-                <div class="dropdown-content">
-                	<a href="profile.html">Profile</a>
-                    <a href="settings.html">Settings</a>
-                    <a href="forum.html">Forum Posts</a>
-                    <a href="message.html">Messages</a>
-                    <form action="LogoutServlet" method="post">
-                    <input type="submit" value="Logout" />
-                    </form>
-                    <!--  a href="login.jsp">Log Out</a -->
-                </div>
-                
-            </li>
+            <li><a href="forum.html">Bulletin Board</a></li>
+            <li><a href="profile.html">Account</a></li>
+            <li><a href="LogoutServlet">Logout</a></li>
         </ul>
     </nav>
     <!-- InstanceBeginEditable name="main" -->
     <div id="main-content">
     <h5>Welcome to your Community Watch homepage</h5>
-    <iframe
-      width="525"
-      height="330"
-      frameborder="0" style="border:0"
-      src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAbu0vFOsoNXKcPaiPWE52yn7X4ixGpi_o&q=Wake+Tech+Community+College" allowfullscreen>
-	</iframe>
-    
     </div>
-
 <%@ page import="community.objects.Event" %> 
 <% 
 java.sql.Connection connect;
@@ -121,7 +92,6 @@ catch(ClassNotFoundException c){ c.printStackTrace();}
 catch(java.sql.SQLException s) { s.printStackTrace(); }
 
 %>
-    
     <aside><br>
     	<ul class="nav nav-tabs">
         	<li class="active"><a data-toggle="tab" href="#recent">Recent Events</a></li>
@@ -167,38 +137,28 @@ catch(java.sql.SQLException s) { s.printStackTrace(); }
 				</div>
             </div>
             <div id="new" class="tab-pane fade">
-            <form action="EventServlet" method="post" id="log-event">
-            <h5>Log New Event</h5>
-                <label>Location:</label>
-                <input type="text" name="location" placeholder="google places">
-                <p id="event-radio">
-                  <label>
-                    <input type="radio" name="event-type" value="theft" id="theft">
-                    Theft</label>
-                  <br>
-                  <label>
-                    <input type="radio" name="event-type" value="vandal" id="vandal">
-                    Vandalism</label>
-                  <br>
-                  <label>
-                    <input type="radio" name="event-type" value="breakin" id="breakin">
-                    Break-in</label>
-                  <br>
-                  <label>
-                    <input type="radio" name="event-type" value="assault" id="assault">
-                    Assault</label>
-                  <br>
-                  <label>
-                    <input type="radio" name="event-type" value="suspicious" id="Suspicious">
-                    Suspicious Activity</label>
-                  <br>
-                </p>
-                <label>Event description: </label>
-                <textarea cols="28" rows="2" name="description"></textarea>
-                <div id="anonbox">
-                <input type="checkbox" name="anon"> <label>Remain Anonymous</label></div>
-                <input name="eventbutton" type="submit" id="eventbutton">
-            </form>
+                <form action="EventServlet" method="post" class="log-event">
+                    <h5>Log New Event</h5>
+                    <input id="autocomplete" placeholder="Enter location or address" onFocus="geolocate()" type="text"></input>
+                    <input type="text" id="address-lat" hidden="true"/>
+                    <input type="text" id="address-lng" hidden="true"/>
+                    <div id="cat-container">
+                    	<select >
+                            <option value="select">Select a category</option>       
+                            <option value="assault">Assault</option>
+                            <option value="breakin">Break-in</option>
+                            <option value="robbery">Robbery</option>
+                            <option value="arson">Arson</option>
+                            <option value="vandalism">Vandalism</option>
+                            <option value="shooter">Active Shooter</option>
+                        </select>
+                    </div>
+                    <label>Brief description: </label>
+                    <textarea cols="28" rows="2" name="description"></textarea>
+                    <div id="anonbox">
+                    <input type="checkbox" name="anon"> <label>Remain anonymous</label></div>
+                    <input name="eventbutton" type="submit" id="eventbutton">
+                </form>
 			</div>
 		</div>
     </aside>
@@ -212,21 +172,57 @@ catch(java.sql.SQLException s) { s.printStackTrace(); }
 		&copy; Community Software 2017
     </section>
     
+    <section id="footcontact">
+    	901 Fayetteville Rd<br>
+        Raleigh, NC 27603<br>
+        (919)866-5000<br>
+    </section>
+    
     <section id="footsocial">
-    	<a href="http://www.twitter.com"><img src="images/icons/twitter.png" width="24" height="24" class="icon-image" alt="Community Watch Twitter page" ></a>
-      <a href="http://www.facebook.com"><img src="images/icons/fb.png" width="24" height="24" class="icon-image" alt="Community Watch Facebook page" ></a> 
-      <a href="http://www.instagram.com"><img src="images/icons/instagram.png" width="24" height="24" class="icon-image" alt="Community Watch Instagram page"></a>
-        <br>
         <a href="mailto:CommunitySoftwareWakeTech@gmail.com">Contact Us</a>
     </section>
     
-	<section id="footcontact">
-    	123 Main St<br>
-        Anytown, NC 99999<br>
-        (987)654-3210<br> 
-    </section>
+	
 
 </footer>
+<!-- InstanceBeginEditable name="js" -->
 
+	<script>
+	var placeSearch, autocomplete;
+	
+	function initAutocomplete() {
+		autocomplete = new google.maps.places.Autocomplete(
+			(document.getElementById('autocomplete')),
+			{types: ['geocode']});
+			
+		autocomplete.addListener('place_changed', getAddressData);
+	}
+	
+	function getAddressData() {
+		var place = autocomplete.getPlace();
+		document.getElementById('address-lat').value = (place.geometry.location.lat());
+		document.getElementById('address-lng').value = (place.geometry.location.lng());
+	}
+	
+	function geolocate() {
+		if (navigator.geolocation) {
+		  navigator.geolocation.getCurrentPosition(function(position) {
+			var geolocation = {
+			  lat: position.coords.latitude,
+			  lng: position.coords.longitude
+			};
+			var circle = new google.maps.Circle({
+			  center: geolocation,
+			  radius: position.coords.accuracy
+			});
+			autocomplete.setBounds(circle.getBounds());
+		  });
+		}
+	}
+    </script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&libraries=places&callback=initAutocomplete" 
+	async defer></script>
+
+<!-- InstanceEndEditable -->
 </body>
 <!-- InstanceEnd --></html>
