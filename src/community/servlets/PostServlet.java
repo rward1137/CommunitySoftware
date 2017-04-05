@@ -1,6 +1,7 @@
 package community.servlets;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,10 +32,12 @@ public class PostServlet extends HttpServlet {
 			HttpServletResponse response) throws IOException {
 		
 		// get request.getparam() for subject, content, threadID, username
-		username = request.getParameter("username"); // actually we'll probably get this from cookie data
 		subject = request.getParameter("subject");
 		content = request.getParameter("content");
-		// threadID?
+
+		Cookie[] cookie = request.getCookies();
+		if (cookie == null) { response.sendRedirect("bam.html"); }
+		username = cookie[0].getValue();
 		
 		try {
 			// get database connection

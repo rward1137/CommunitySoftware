@@ -1,4 +1,4 @@
-<doctype=html>
+<!doctype=html>
 <html><!-- InstanceBegin template="/Templates/prelogin.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
@@ -48,9 +48,9 @@
 			<label>Choose Username: </label>
 			<input type="text" name="username" />
 			<label>Choose Password: </label>
-			<input type="password" name="password" />
+			<input type="password" name="password1" />
 			<label>Confirm Password: </label>
-			<input type="password" name="password" />
+			<input type="password" name="password2" />
 			<label>Email Address: </label>
 			<input type="email" name="email" />
             <label>Home Address: </label> 

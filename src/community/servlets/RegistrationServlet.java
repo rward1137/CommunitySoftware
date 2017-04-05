@@ -29,7 +29,7 @@ public class RegistrationServlet extends HttpServlet {
 	private ResultSet result;
 	private PreparedStatement prep;
 	
-	private String fname, lname, username, password, passworde, email, address;
+	private String fname, lname, username, password1, password2, passworde, email, address;
 	private String latitude, longitude;
 //	private String address;
 	private int communityID;
@@ -38,13 +38,14 @@ public class RegistrationServlet extends HttpServlet {
 	private PasswordEncryptor passencrypt;
 	
 	protected void doPost(HttpServletRequest request, 
-			HttpServletResponse response) {
+			HttpServletResponse response) throws IOException, ServletException {
 		// get first, last, communityID, username, password, email, address (1 string now)
 			// from request.getParameter()
 		fname = request.getParameter("first");
 		lname = request.getParameter("last");
 		username = request.getParameter("username");
-		password = request.getParameter("password");
+		password1 = request.getParameter("password1");
+		password2 = request.getParameter("password2");
 		email = request.getParameter("email");
 //		address = request.getParameter("address");
 		communityID = Integer.parseInt(request.getParameter("communityID"));
@@ -53,9 +54,14 @@ public class RegistrationServlet extends HttpServlet {
 		longitude = request.getParameter("long");
 		
 		passencrypt = new BasicPasswordEncryptor();
-		passworde = passencrypt.encryptPassword(password);
+		passworde = passencrypt.encryptPassword(password1);
 		
-		
+		if (!password1.equals(password2)) {
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/registrationfailure.html");
+			PrintWriter out= response.getWriter();
+			out.println("<font color=pink>The passwords did not match!</font>");
+			rd.include(request, response);
+		}
 		
 		existingCommunityId = false;
 		existingUsername = false;
@@ -144,8 +150,6 @@ public class RegistrationServlet extends HttpServlet {
 				// redirect to login screen with success message, "please log in now"
 		}
 		catch (SQLException s) { s.printStackTrace(); }
-		catch (IOException i) { i.printStackTrace(); }
-		catch (ServletException v) { v.printStackTrace(); } 
 		catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

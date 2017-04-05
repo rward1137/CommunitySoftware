@@ -7,18 +7,20 @@ public class Post {
 	private String createdOn;
 	private String createdTime;
 	private int userID;
+	private String username;
 	private int statusID;
 	
 	public Post() {}
 	
 	public Post(int id, String about, String contents, String created, String createdT,
-			 int user, int status) {
+			 int userID, String user, int status) {
 		postID = id;
 		subject = about;
 		content = contents;
 		createdOn = created;
 		createdTime = createdT;
-		userID = user;
+		this.userID = userID;
+		username = user;
 		statusID = status;
 	}
 	
@@ -31,7 +33,9 @@ public class Post {
 	public void setStatus(int id) { statusID = id; }
 	public int getStatus() { return statusID; }
 	public void setUser(int id) { userID = id; }
-	public int createdBy() { return userID; }
+	public void setUsername(String user) { username = user; }
+	public int getUserID() { return userID; }
+	public String createdBy() { return username; }
 	public void setSubject(String subj) { subject = subj; }
 	public String getSubject() { return subject; }
 	public void setContent(String cont) { content = cont; }

@@ -28,71 +28,118 @@ public class EventServlet extends HttpServlet {
 	private PreparedStatement prep;
 	private ResultSet result;
 	
-	private String userID;
+	// old ones
 	private String location;
 	private String eventType;
+
+	
+	// for NewEventWithNewMarker
+	private int markerID = 1;
+	private int markerNameID;
+	private String markerName;
+	private String address;
+	private float latitude;
+	private float longitude;
+	private int markerTypeID;
+	private String date;
+	private String time;
+	private String username;
+	private String userID;
 	private String description;
-	private String anon;
+	private String anonString;
 	private int anonymous;
+	private int priorityLevel;
+	
+	/*
+	sp_NewEventWithNewMarker
+?	1 @MarkerID int,
+*	2 @MarkerNamesID    SmallInt,
+*	3 @Address    VARCHAR(MAX),
+*	4 @Lattitude    Float,
+*	5 @Longitude    Float,
+*	6 @MarkerTypeID    SmallInt,                            
+*	7 @EventDate    DATE,
+*	8 @EventTime    Time,
+*	9 @UserID    nvarchar(128),
+*	10 @Details    VARCHAR(MAX),
+*	11 @AnonymousLogged    bit,
+*	12 @PriorityLevelID    SMALLINT
+	*/
 	
 	protected void doPost(HttpServletRequest request, 
 			HttpServletResponse response) throws IOException, ServletException { 
 		
-		location = request.getParameter("location");
-		eventType = request.getParameter("event-type"); // use for markerID & priority level
+		address = request.getParameter("address");
+		latitude = Float.parseFloat(request.getParameter("latitude"));
+		longitude = Float.parseFloat(request.getParameter("longitude"));
+		markerNameID = Integer.parseInt(request.getParameter("cat-select"));
+		priorityLevel = Integer.parseInt(request.getParameter("priority-select"));
 		description = request.getParameter("description");
-		anon = request.getParameter("anon"); // if null, unchecked
-		if (anon == null) { anonymous = 0; }
+		anonString = request.getParameter("anon");
+		if (anonString == null) { anonymous = 0; }
 		else { anonymous = 1; }
 		
-		
 		Cookie[] cookie = request.getCookies();
+		if (cookie == null) { response.sendRedirect("bam.html"); }
+		username = cookie[0].getValue();
 		
-		if (cookie == null) {
-			response.sendRedirect("loginfailure.html");
-		}
-		
-		// get username from cookie
-		String username = cookie[0].getValue();
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			connect = DriverManager.getConnection("jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=CommunitySoftware;IntegratedSecurity=true;");
 			stmt = connect.createStatement();
-			result = stmt.executeQuery("select ID from Users where username = \'" + username + "\'");
-			while (result.next()) {
-				userID = result.getString("ID");
-			}
 			
+			// Assign UserID based on username from cookie
+			result = stmt.executeQuery("select ID from Users where username = \'" + username + "\'");
+			while (result.next()) { userID = result.getString("ID"); }
+			
+			// Get marker name for marker type selection
+			result = stmt.executeQuery("select MarkerName from MarkerNames where ID = " + markerNameID);
+			while (result.next()) { markerName = result.getString("MarkerName"); }
+			
+			// Get marker type number
+			result = stmt.executeQuery("select ID from MarkerTypes where MarkerTypeName = \'" + markerName + "\'");
+			while (result.next()) { markerTypeID = Integer.parseInt(result.getString("ID")); }
+		
+			// Date
 			Date todate = new Date(System.currentTimeMillis());
+			
+			// Time
 			LocalTime time = LocalTime.now();
 			int hr = time.getHour();
 			int min = time.getMinute();
 			int sec = time.getSecond();
 			String timeString = "" + hr + ":" + min + ":" + sec;
 			
-			
-			// get database connection & prepare statement below
-			// This is crap and needs more logic to create all these fields correctly
-			prep = connect.prepareStatement("EXEC sp_NewEvent ?, ?, ?, ?, ?, ?, ?");
-			prep.setDate(1, todate);
-			prep.setString(2, timeString); // Event Time - use system time, division etc
-			prep.setInt(3, 1);
-			int userid = Integer.parseInt(userID);
-			prep.setInt(4, userid); 
-			prep.setString(5, description);
-			prep.setInt(6, anonymous);
-			prep.setInt(7, 1);
+			// Database Update
+			prep = connect.prepareStatement("EXEC NewEventWithNewMarkerCreate ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?");
+			prep.setInt(1, markerID); // Dummy field initialized to 1
+			prep.setInt(2, markerNameID);
+			prep.setString(3, address);
+			prep.setFloat(4, latitude);
+			prep.setFloat(5, longitude);
+			prep.setInt(6, markerTypeID);
+			prep.setDate(7, todate);
+			prep.setString(8, timeString);
+			prep.setString(9, userID);
+			prep.setString(10, description);
+			prep.setInt(11, anonymous);
+			prep.setInt(12, priorityLevel);
 			prep.executeUpdate();
-			
-			/*  EXEC sp_NewEvent
-		 		1 @EventDate = @tempdate,
-    			2 @EventTime = @temptime,
-    			3 @MarkerID = 1,
-    			4 @UserID = 1,
-    			5 @Details = 'Something happened here be safe' ,
-    			6 @AnonymousLogged = 0 ,
-    			7 @PriorityLevelID = 1
-			 */
+			/*
+			sp_NewEventWithNewMarker
+		?	1 @MarkerID int,
+		*	2 @MarkerNamesID    SmallInt,
+		*	3 @Address    VARCHAR(MAX),
+		*	4 @Lattitude    Float,
+		*	5 @Longitude    Float,
+		*	6 @MarkerTypeID    SmallInt,                            
+		*	7 @EventDate    DATE,
+		*	8 @EventTime    Time,
+		*	9 @UserID    nvarchar(128),
+		*	10 @Details    VARCHAR(MAX),
+		*	11 @AnonymousLogged    bit,
+		*	12 @PriorityLevelID    SMALLINT
+			*/
 		
 			response.sendRedirect("index.jsp");
 		}

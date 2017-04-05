@@ -13,6 +13,8 @@ public class Event {
 	private boolean anon;
 	private int priorityLevelID;
 	private String location;
+	private float latitude;
+	private float longitude;
 
 	public Event() {}
 	
@@ -28,6 +30,10 @@ public class Event {
 		this.details = details;
 	}
 	
+	public void setLong(float longitude) { this.longitude = longitude; }
+	public float getLong() { return longitude; }
+	public void setLat(float lat) { latitude = lat; }
+	public float getLat() { return latitude; }
 	public void setLocation(String address) { location = address; }
 	public String getLocation() { return location; }
 	public void setUser(String name) { username = name; }
