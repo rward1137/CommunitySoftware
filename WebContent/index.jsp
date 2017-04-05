@@ -51,66 +51,67 @@ if(cookies !=null){
     </nav>
     <!-- InstanceBeginEditable name="main" -->
     <div id="main-content">
-    <h5>Welcome to your Community Watch homepage</h5>
+        <div id="map-canvas">
+        </div>
     </div>
-<%@ page import="community.objects.Event" %> 
-<% 
-java.sql.Connection connect;
-java.sql.Statement stmt;
-java.sql.ResultSet result;
-java.sql.PreparedStatement prep;
-java.util.ArrayList<Event> events = new java.util.ArrayList<>();
-Event tempEvent;
-int mostRecentEvent = 0;
-int anonlogged = 0;
-String username;
-int userID;
-try{
-	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-	connect = java.sql.DriverManager.getConnection("jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=CommunitySoftware;IntegratedSecurity=true;");
-	stmt = connect.createStatement();
-	
-	result = stmt.executeQuery("select ID from events");
-	while (result.next()) {mostRecentEvent = Integer.parseInt(result.getString("ID")); }
-//	System.out.println(mostRecentEvent);
-	mostRecentEvent = mostRecentEvent - 4;
-//	System.out.println(mostRecentEvent);
-	
-	result = stmt.executeQuery("select * from events where ID >= " + mostRecentEvent);
-	while (result.next()) {
-	//	System.out.println(result.getString("Details"));
-		tempEvent = new Event();
-		tempEvent.setID(Integer.parseInt(result.getString("ID")));
-		tempEvent.setDate(result.getString("EventDate"));
-		String timestring = result.getString("EventTime");
-		tempEvent.setTime(timestring.substring(0, 5));
-		tempEvent.setMarker(Integer.parseInt(result.getString("MarkerID")));
-		tempEvent.setDetails(result.getString("Details"));
-		anonlogged = Integer.parseInt(result.getString("AnonymousLogged"));
-		if (anonlogged == 0) {
-			tempEvent.setUserID(Integer.parseInt(result.getString("UserID")));
-			tempEvent.setUser("PlaceHolding");
-		}
-		else tempEvent.setUser("Anonymous");
-		tempEvent.setPriorityLevel(Integer.parseInt(result.getString("PriorityLevelID")));
-		events.add(tempEvent);
-	}
-	
-	for (Event e : events) {
-		if (!e.getUser().equals("Anonymous")) {
-			int id = e.getUserID();
-			result = stmt.executeQuery("select UserName from Users where ID = " + id);
-			while (result.next()) {
-				e.setUser(result.getString("UserName"));
-			}
-		}
-	}
-	
-	
-}
-catch(ClassNotFoundException c){ c.printStackTrace();}
-catch(java.sql.SQLException s) { s.printStackTrace(); }
-%>
+    <%@ page import="community.objects.Event" %> 
+    <% 
+    java.sql.Connection connect;
+    java.sql.Statement stmt;
+    java.sql.ResultSet result;
+    java.sql.PreparedStatement prep;
+    java.util.ArrayList<Event> events = new java.util.ArrayList<>();
+    Event tempEvent;
+    int mostRecentEvent = 0;
+    int anonlogged = 0;
+    String username;
+    int userID;
+    try{
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        connect = java.sql.DriverManager.getConnection("jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=CommunitySoftware;IntegratedSecurity=true;");
+        stmt = connect.createStatement();
+        
+        result = stmt.executeQuery("select ID from events");
+        while (result.next()) {mostRecentEvent = Integer.parseInt(result.getString("ID")); }
+    //	System.out.println(mostRecentEvent);
+        mostRecentEvent = mostRecentEvent - 4;
+    //	System.out.println(mostRecentEvent);
+        
+        result = stmt.executeQuery("select * from events where ID >= " + mostRecentEvent);
+        while (result.next()) {
+        //	System.out.println(result.getString("Details"));
+            tempEvent = new Event();
+            tempEvent.setID(Integer.parseInt(result.getString("ID")));
+            tempEvent.setDate(result.getString("EventDate"));
+            String timestring = result.getString("EventTime");
+            tempEvent.setTime(timestring.substring(0, 5));
+            tempEvent.setMarker(Integer.parseInt(result.getString("MarkerID")));
+            tempEvent.setDetails(result.getString("Details"));
+            anonlogged = Integer.parseInt(result.getString("AnonymousLogged"));
+            if (anonlogged == 0) {
+                tempEvent.setUserID(Integer.parseInt(result.getString("UserID")));
+                tempEvent.setUser("PlaceHolding");
+            }
+            else tempEvent.setUser("Anonymous");
+            tempEvent.setPriorityLevel(Integer.parseInt(result.getString("PriorityLevelID")));
+            events.add(tempEvent);
+        }
+        
+        for (Event e : events) {
+            if (!e.getUser().equals("Anonymous")) {
+                int id = e.getUserID();
+                result = stmt.executeQuery("select UserName from Users where ID = " + id);
+                while (result.next()) {
+                    e.setUser(result.getString("UserName"));
+                }
+            }
+        }
+        
+        
+    }
+    catch(ClassNotFoundException c){ c.printStackTrace();}
+    catch(java.sql.SQLException s) { s.printStackTrace(); }
+    %>
     <aside><br>
     	<ul class="nav nav-tabs">
         	<li class="active"><a data-toggle="tab" href="#recent">Recent Events</a></li>
@@ -210,21 +211,28 @@ catch(java.sql.SQLException s) { s.printStackTrace(); }
                     <input type="text" id="address-lat" hidden="true"/>
                     <input type="text" id="address-lng" hidden="true"/>
                     <div id="cat-container">
-                    	<select >
-                            <option value="select">Select a category</option>       
-                            <option value="assault">Assault</option>
-                            <option value="breakin">Break-in</option>
-                            <option value="robbery">Robbery</option>
-                            <option value="arson">Arson</option>
-                            <option value="vandalism">Vandalism</option>
-                            <option value="shooter">Active Shooter</option>
+                    	<select name="cat-select">
+                            <option value="select">Category</option>       
+                            <option value="1">Assault</option>
+                            <option value="2">Break-in</option>
+                            <option value="3">Robbery</option>
+                            <option value="4">Arson</option>
+                            <option value="5">Vandalism</option>
+                            <option value="6">Active Shooter</option>
                         </select>
+                        
+                        <select name="priority-select">
+                            <option value="select">Priority level</option>       
+                            <option value="1">level 1</option>
+                            <option value="2">level 2</option>
+                            <option value="3">level 3</option>
+                        </select>  
                     </div>
                     <label>Brief description: </label>
                     <textarea cols="28" rows="2" name="description"></textarea>
                     <div id="anonbox">
                     <input type="checkbox" name="anon"> <label>Remain anonymous</label></div>
-                    <input name="eventbutton" type="submit" id="eventbutton">
+                    <input name="eventbutton" type="submit" class="eventbutton">
                 </form>
 			</div>
 		</div>
@@ -289,6 +297,8 @@ catch(java.sql.SQLException s) { s.printStackTrace(); }
     </script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&libraries=places&callback=initAutocomplete" 
 	async defer></script>
+    
+    <script src="script.js"></script>
 
 <!-- InstanceEndEditable -->
 </body>
