@@ -253,3 +253,65 @@ footer a:hover {
 #recent-events td{
 	padding-top: 10px;
 }
+
+#cat-container {
+	margin: 5px;
+}
+
+#autocomplete {
+	width: 250px;
+}
+
+.log-event label, .log-event input {
+	margin: 5px;
+}
+
+#posts {
+	margin-top:10px;
+	margin-left:auto;
+	margin-right:auto;
+	width: 90%;
+	height: 350px;
+}
+
+.panel-title {
+	text-align: left;
+}
+
+.panel-subtitle {
+	text-align: right;
+}
+
+.panel-default {
+	margin : 10px;
+}
+
+.panel-body {
+	height: 70px;
+}
+
+#change-password {
+	width: 290px;
+	margin-right:auto;
+	margin-left:auto;
+}
+
+#change-password label {
+	margin-top:4px;
+	margin-bottom: 2px;
+	width: 150px;
+	text-align:right;
+	float: left;
+}
+
+#change-password input{
+	width: 120px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+#user-info {
+	width: 500px;
+	margin-left:auto;
+	margin-right:auto;
+}
