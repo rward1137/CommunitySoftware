@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Date;
@@ -31,6 +33,7 @@ public class EventServlet extends HttpServlet {
 	private String eventType;
 	private String description;
 	private String anon;
+	private int anonymous;
 	
 	protected void doPost(HttpServletRequest request, 
 			HttpServletResponse response) throws IOException, ServletException { 
@@ -39,7 +42,9 @@ public class EventServlet extends HttpServlet {
 		eventType = request.getParameter("event-type"); // use for markerID & priority level
 		description = request.getParameter("description");
 		anon = request.getParameter("anon"); // if null, unchecked
-		if (anon == null) { anon = "no"; }
+		if (anon == null) { anonymous = 0; }
+		else { anonymous = 1; }
+		
 		
 		Cookie[] cookie = request.getCookies();
 		
@@ -47,8 +52,6 @@ public class EventServlet extends HttpServlet {
 			response.sendRedirect("loginfailure.html");
 		}
 		
-		// create util.date -> initialize sql.date
-		Date todate = new Date(System.currentTimeMillis());
 		// get username from cookie
 		String username = cookie[0].getValue();
 		try {
@@ -60,16 +63,24 @@ public class EventServlet extends HttpServlet {
 				userID = result.getString("ID");
 			}
 			
+			Date todate = new Date(System.currentTimeMillis());
+			LocalTime time = LocalTime.now();
+			int hr = time.getHour();
+			int min = time.getMinute();
+			int sec = time.getSecond();
+			String timeString = "" + hr + ":" + min + ":" + sec;
+			
+			
 			// get database connection & prepare statement below
 			// This is crap and needs more logic to create all these fields correctly
 			prep = connect.prepareStatement("EXEC sp_NewEvent ?, ?, ?, ?, ?, ?, ?");
 			prep.setDate(1, todate);
-			prep.setString(2, "10:30am"); // Event Time - use system time, division etc
+			prep.setString(2, timeString); // Event Time - use system time, division etc
 			prep.setInt(3, 1);
 			int userid = Integer.parseInt(userID);
 			prep.setInt(4, userid); 
 			prep.setString(5, description);
-			prep.setInt(6, 0);
+			prep.setInt(6, anonymous);
 			prep.setInt(7, 1);
 			prep.executeUpdate();
 			

@@ -4,6 +4,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -11,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.time.LocalTime;
 
 @WebServlet("/PostServlet")
 public class PostServlet extends HttpServlet {
@@ -22,10 +25,10 @@ public class PostServlet extends HttpServlet {
 	private PreparedStatement prep;
 	private ResultSet result;
 	private String username, subject, content;
-	private int threadID, userID, statusID;
+	private int threadID = 1, userID = 1, statusID = 1;
 	
 	protected void doPost(HttpServletRequest request, 
-			HttpServletResponse response) {
+			HttpServletResponse response) throws IOException {
 		
 		// get request.getparam() for subject, content, threadID, username
 		username = request.getParameter("username"); // actually we'll probably get this from cookie data
@@ -48,12 +51,17 @@ public class PostServlet extends HttpServlet {
 			
 			// create Date & Time for right now
 			Date todate = new Date(System.currentTimeMillis());
+			LocalTime time = LocalTime.now();
+			int hr = time.getHour();
+			int min = time.getMinute();
+			int sec = time.getSecond();
+			String timeString = "" + hr + ":" + min + ":" + sec;
 			
 			prep = connect.prepareStatement("EXEC sp_NewPost ?, ?, ?, ?, ?, ?, ?");
 			prep.setString(1, subject);
 			prep.setString(2, content);
 			prep.setDate(3, todate);
-			// 4: current time
+			prep.setString(4, timeString);
 			prep.setInt(5, threadID);
 			prep.setInt(6, userID);
 			prep.setInt(7, statusID); // user status
@@ -76,6 +84,6 @@ public class PostServlet extends HttpServlet {
 		finally{}
 		
 		
-		// response.redirect( forum page again );
+		response.sendRedirect("bulletinboard.jsp");
 	}
 }

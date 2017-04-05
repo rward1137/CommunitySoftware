@@ -29,7 +29,8 @@ public class RegistrationServlet extends HttpServlet {
 	private ResultSet result;
 	private PreparedStatement prep;
 	
-	private String fname, lname, username, password, passworde, email;
+	private String fname, lname, username, password, passworde, email, address;
+	private String latitude, longitude;
 //	private String address;
 	private int communityID;
 	private boolean existingCommunityId, existingUsername, existingEmail;
@@ -47,6 +48,9 @@ public class RegistrationServlet extends HttpServlet {
 		email = request.getParameter("email");
 //		address = request.getParameter("address");
 		communityID = Integer.parseInt(request.getParameter("communityID"));
+		address = request.getParameter("address");
+		latitude = request.getParameter("lat");
+		longitude = request.getParameter("long");
 		
 		passencrypt = new BasicPasswordEncryptor();
 		passworde = passencrypt.encryptPassword(password);
@@ -106,7 +110,7 @@ public class RegistrationServlet extends HttpServlet {
 			else {
 				
 				// Prepare User insertion statement
-				prep = connect.prepareStatement("EXEC sp_NewUser ?, ?, ?, ?, ?, ?, ?, ?, ?");
+				prep = connect.prepareStatement("insert into Users values( ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 				// username
 				prep.setString(1, username);
 				// userpassword
@@ -124,7 +128,7 @@ public class RegistrationServlet extends HttpServlet {
 				// organizationID
 				prep.setInt(8, communityID);
 				// addressID
-				prep.setInt(9, 1);
+				prep.setString(9, address);
 				
 				// longitude
 					// TODO

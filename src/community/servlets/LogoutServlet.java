@@ -22,4 +22,12 @@ public class LogoutServlet extends HttpServlet {
     	if(session != null){ session.invalidate(); }
     	response.sendRedirect("login.jsp");	
 	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession(false);
+//    	System.out.println("User="+session.getAttribute("user"));
+    	if(session != null){ session.invalidate(); }
+    	response.sendRedirect("login.jsp");	
+	}
+	
 }
