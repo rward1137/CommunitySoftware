@@ -33,10 +33,6 @@ if(cookies !=null){
     <section id="title">
     Community Watch
     </section>
-    
-  <section id="headcontact">
-        
-    </section>
 </header>
 
 <div id="content">
@@ -263,6 +259,52 @@ if(cookies !=null){
 <!-- InstanceBeginEditable name="js" -->
 
 	<script>
+	
+	function initialize() {
+	  initMap();
+	  initAutocomplete();
+	}
+	
+	var geocoder;
+	var map;
+	
+	function initMap() {
+		geocoder = new google.maps.Geocoder();
+		var center = codeAddress(); 
+		map = new google.maps.Map(document.getElementById('map-canvas'), {
+			center: {
+				lat:35.6507,
+				lng:78.7041
+			},
+			zoom: 15
+		});
+	}
+	
+	function codeAddress() {
+		var address = 'Wake Tech'; //user address string  from db here
+	
+		geocoder.geocode({
+			'address': address
+		}, function (results, status) {
+	
+			if (status == google.maps.GeocoderStatus.OK) {
+	
+				// Center map on location
+				map.setCenter(results[0].geometry.location);
+	
+				// Add marker on location
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[0].geometry.location
+				});
+	
+			} else {
+	
+				alert("Geocode was not successful for the following reason: " + status);
+			}
+		});
+	}
+	
 	var placeSearch, autocomplete;
 	
 	function initAutocomplete() {
@@ -295,10 +337,8 @@ if(cookies !=null){
 		}
 	}
     </script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&libraries=places&callback=initAutocomplete" 
+	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initialize&libraries=places" 
 	async defer></script>
-    
-    <script src="script.js"></script>
 
 <!-- InstanceEndEditable -->
 </body>
