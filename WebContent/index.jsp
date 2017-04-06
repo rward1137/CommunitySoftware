@@ -257,9 +257,8 @@ if(cookies !=null){
 
 </footer>
 <!-- InstanceBeginEditable name="js" -->
-
-	<script>
-	
+<script>
+	//load the autocomplete object and the map object
 	function initialize() {
 	  initMap();
 	  initAutocomplete();
@@ -267,10 +266,9 @@ if(cookies !=null){
 	
 	var geocoder;
 	var map;
-	
 	function initMap() {
 		geocoder = new google.maps.Geocoder();
-		var center = codeAddress(); 
+		
 		map = new google.maps.Map(document.getElementById('map-canvas'), {
 			center: {
 				lat:35.6507,
@@ -278,14 +276,13 @@ if(cookies !=null){
 			},
 			zoom: 15
 		});
+		codeAddress(); 
 	}
 	
 	function codeAddress() {
-		var address = 'Wake Tech'; //user address string  from db here
+		var address = 'Raleigh, NC'; //user address string  from db here
 	
-		geocoder.geocode({
-			'address': address
-		}, function (results, status) {
+		geocoder.geocode({ 'address': address }, function (results, status) {
 	
 			if (status == google.maps.GeocoderStatus.OK) {
 	
@@ -305,6 +302,10 @@ if(cookies !=null){
 		});
 	}
 	
+	
+	
+	
+//address field autocomplete for new event form
 	var placeSearch, autocomplete;
 	
 	function initAutocomplete() {
@@ -315,12 +316,14 @@ if(cookies !=null){
 		autocomplete.addListener('place_changed', getAddressData);
 	}
 	
+	//finds the coords of the chosen place
 	function getAddressData() {
 		var place = autocomplete.getPlace();
 		document.getElementById('address-lat').value = (place.geometry.location.lat());
 		document.getElementById('address-lng').value = (place.geometry.location.lng());
 	}
 	
+	//asks for user's location to suggest places
 	function geolocate() {
 		if (navigator.geolocation) {
 		  navigator.geolocation.getCurrentPosition(function(position) {
@@ -336,8 +339,8 @@ if(cookies !=null){
 		  });
 		}
 	}
-    </script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initialize&libraries=places" 
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&callback=initialize&libraries=places" 
 	async defer></script>
 
 <!-- InstanceEndEditable -->
