@@ -33,10 +33,6 @@ if(cookies !=null){
     <section id="title">
     Community Watch
     </section>
-    
-  <section id="headcontact">
-        
-    </section>
 </header>
 
 <div id="content">
@@ -44,7 +40,7 @@ if(cookies !=null){
     <nav>
     	<ul>
         	<li><a href="index.jps">Event Log</a></li>
-            <li><a href="bulletinboard.jsp">Bulletin Board</a></li>
+            <li><a href="forum.jsp">Bulletin Board</a></li>
             <li><a href="profile.jsp">Account</a></li>
             <li><a href="LogoutServlet">Logout</a></li>
         </ul>
@@ -126,8 +122,8 @@ if(cookies !=null){
                             	<p class="panel-title">
                                 	<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     	<!-- MOST RECENT EVENT -->
+                                        <%= events.get(4).getID() %>
                                         <%= events.get(4).createdOn() %>
-                                        <%= events.get(4).createdAt() %>
                                     </a>
                                 </p>
                              </div>
@@ -142,8 +138,8 @@ if(cookies !=null){
                               <p class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                   <!-- 2ND MOST RECENT -->
+                                  <%= events.get(3).getID() %>
                                   <%= events.get(3).createdOn() %>
-                                  <%= events.get(3).createdAt() %>
                                 </a>
                               </p>
                             </div>
@@ -158,8 +154,8 @@ if(cookies !=null){
                               <p class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                   <!-- 3RD MOST RECENT -->
-                          		  <%= events.get(2).createdOn() %>
-                                  <%= events.get(2).createdAt() %>
+                          		  <%= events.get(2).getID() %>
+                                  <%= events.get(2).createdOn() %>
                                 </a>
                               </p>
                             </div>
@@ -174,8 +170,8 @@ if(cookies !=null){
                               <p class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                   <!-- 4TH MOST RECENT -->
-                          		  <%= events.get(1).createdOn() %>
-                                  <%= events.get(1).createdAt() %>
+                          		  <%= events.get(1).getID() %>
+                                  <%= events.get(1).createdOn() %>
                                 </a>
                               </p>
                             </div>
@@ -190,8 +186,8 @@ if(cookies !=null){
                               <p class="panel-title">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                                   <!-- 5TH MOST RECENT -->
-                          		  <%= events.get(0).createdOn() %>
-                                  <%= events.get(0).createdAt() %>
+                          		  <%= events.get(0).getID() %>
+                                  <%= events.get(0).createdOn() %>
                                 </a>
                               </p>
                             </div>
@@ -207,18 +203,18 @@ if(cookies !=null){
             <div id="new" class="tab-pane fade">
                 <form action="EventServlet" method="post" class="log-event">
                     <h5>Log New Event</h5>
-                    <input id="autocomplete" name="address" placeholder="Enter location or address" onFocus="geolocate()" type="text"></input>
-                    <input type="text" id="address-lat" name="latitude" hidden="true"/>
-                    <input type="text" id="address-lng" name="longitude" hidden="true"/>
+                    <input id="autocomplete" placeholder="Enter location or address" onFocus="geolocate()" type="text"></input>
+                    <input type="text" id="address-lat" hidden="true"/>
+                    <input type="text" id="address-lng" hidden="true"/>
                     <div id="cat-container">
                     	<select name="cat-select">
-                            <option value="1">Category</option>       
-                            <option value="2">Assault</option>
-                            <option value="3">Break-in</option>
-                            <option value="4">Robbery</option>
-                            <option value="5">Arson</option>
-                            <option value="6">Vandalism</option>
-                            <option value="7">Active Shooter</option>
+                            <option value="select">Category</option>       
+                            <option value="1">Assault</option>
+                            <option value="2">Break-in</option>
+                            <option value="3">Robbery</option>
+                            <option value="4">Arson</option>
+                            <option value="5">Vandalism</option>
+                            <option value="6">Active Shooter</option>
                         </select>
                         
                         <select name="priority-select">
@@ -263,6 +259,52 @@ if(cookies !=null){
 <!-- InstanceBeginEditable name="js" -->
 
 	<script>
+	
+	function initialize() {
+	  initMap();
+	  initAutocomplete();
+	}
+	
+	var geocoder;
+	var map;
+	
+	function initMap() {
+		geocoder = new google.maps.Geocoder();
+		var center = codeAddress(); 
+		map = new google.maps.Map(document.getElementById('map-canvas'), {
+			center: {
+				lat:35.6507,
+				lng:78.7041
+			},
+			zoom: 15
+		});
+	}
+	
+	function codeAddress() {
+		var address = 'Wake Tech'; //user address string  from db here
+	
+		geocoder.geocode({
+			'address': address
+		}, function (results, status) {
+	
+			if (status == google.maps.GeocoderStatus.OK) {
+	
+				// Center map on location
+				map.setCenter(results[0].geometry.location);
+	
+				// Add marker on location
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[0].geometry.location
+				});
+	
+			} else {
+	
+				alert("Geocode was not successful for the following reason: " + status);
+			}
+		});
+	}
+	
 	var placeSearch, autocomplete;
 	
 	function initAutocomplete() {
@@ -295,10 +337,8 @@ if(cookies !=null){
 		}
 	}
     </script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&libraries=places&callback=initAutocomplete" 
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&callback=initialize&libraries=places" 
 	async defer></script>
-    
-    <script src="script.js"></script>
 
 <!-- InstanceEndEditable -->
 </body>
