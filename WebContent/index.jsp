@@ -108,7 +108,7 @@ if(cookies !=null){
     catch(ClassNotFoundException c){ c.printStackTrace();}
     catch(java.sql.SQLException s) { s.printStackTrace(); }
     %>
-    <aside><br>
+    <aside>
     	<ul class="nav nav-tabs">
         	<li class="active"><a data-toggle="tab" href="#recent">Recent Events</a></li>
             <li><a data-toggle="tab" href="#new">New Event</a></li>
@@ -208,13 +208,15 @@ if(cookies !=null){
                     <input type="text" id="address-lng" name="longitude" hidden="true"/>
                     <div id="cat-container">
                     	<select name="cat-select">
-                            <option value="1">Category</option>       
-                            <option value="2">Assault</option>
-                            <option value="3">Break-in</option>
-                            <option value="4">Robbery</option>
-                            <option value="5">Arson</option>
-                            <option value="6">Vandalism</option>
-                            <option value="7">Active Shooter</option>
+                            <option value="0">Category</option>       
+                            <option value="1">Assault</option>
+                            <option value="2">Break-in</option>
+                            <option value="3">Robbery</option>
+                            <option value="4">Arson</option>
+                            <option value="5">Vandalism</option>
+                            <option value="6">Active Shooter</option>
+                            <option value="7">Explosion</option>
+                            <option value="8">Suspicious Activity</option>
                         </select>
                         
                         <select name="priority-select">
@@ -257,8 +259,7 @@ if(cookies !=null){
 
 </footer>
 <!-- InstanceBeginEditable name="js" -->
-
-	<script>
+<script>
 	//load the autocomplete object and the map object
 	function initialize() {
 	  initMap();
@@ -275,7 +276,7 @@ if(cookies !=null){
 		var usrAddress = "Durham, NC";//<%= user address string here plz %>;
 		
 		//This big ugly string is for testing, swap it for the line commented out below
-		var events = JSON.parse('['
+		var eventData = JSON.parse('['
 		+ '{"title":"EventID 1","MarkerID":5,"lat":35.651079,"lng":-78.706949,"EventDescription":"Something happened here be safe", "username":"Sophie"},'
 		+ '{"title":"EventID 2","MarkerID":1,"lat":35.779928,"lng":-78.639282,"EventDescription":"test id 2", "username":"Pete"},'
 		+ '{"title":"EventID 3","MarkerID":8,"lat":35.778633,"lng":-78.643008,"EventDescription":"test id 3", "username":"Ricardo"},'
@@ -290,7 +291,6 @@ if(cookies !=null){
 		+ ']');
 		
 		//(<%= your arraylist.toString here plz %>);
-		//PS Don't forget to plug our API code back in at the bottom
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
 		geocoder = new google.maps.Geocoder();
@@ -310,16 +310,19 @@ if(cookies !=null){
 				//put the map
 				map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 				alert("Testing event data transcription:" 
-						+ "\nShould be:\n'39.6392566'\n" + events[10].lat
+						+ "\nShould be:\n'39.6392566'\n" + eventData[10].lat
 						+ "\nThere should be 11 entries in 'events'"
-						+ "\nWe have: " + events.length);
+						+ "\nWe have: " + eventData.length);
 				
 				//loop through json object
 				var markers = [];
-				var infowindows = [];
-				for (var i = 0; i  < events.length; i++) 
+				var contentStrings = [];
+				var infowindow = new google.maps.InfoWindow({
+					content: ""
+				});
+				for (var i = 0; i  < eventData.length; i++) 
 				{
-					var data = events[i];
+					var data = eventData[i];
 					var mapIconBase = "images/map_icons/";
 					var mapIconURL;
 					var catName;
@@ -378,17 +381,13 @@ if(cookies !=null){
 					markers[i].index = i;
 					
 					//html for infowindows
-					var contentString = ("<div><h5>" + markers[i].categoryName + " Reported Here</h5>Event details:<br>" + markers[i].details
+					contentStrings[i] = ("<div><h5>" + markers[i].categoryName + " Reported Here</h5>Event details:<br>" + markers[i].details
 										+ "<br><br> logged by: " + markers[i].user + "</div>");
-					
-					//create infowindows
-					infowindows[i] = new google.maps.InfoWindow({
-						content: contentString
-					});
 					
 					//show infowindows on click
 					google.maps.event.addListener(markers[i], 'click', function() {
-						infowindows[this.index].open(map, markers[this.index]);
+						infowindow.setContent(contentStrings[this.index]);
+						infowindow.open(map, this);
 					});
 				}
 			} else {
@@ -433,7 +432,7 @@ if(cookies !=null){
 		}
 	}
 </script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initialize&libraries=places" 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&callback=initialize&libraries=places" 
 	async defer></script>
 
 <!-- InstanceEndEditable -->
