@@ -259,52 +259,146 @@ if(cookies !=null){
 <!-- InstanceBeginEditable name="js" -->
 
 	<script>
-	
+	//load the autocomplete object and the map object
 	function initialize() {
 	  initMap();
 	  initAutocomplete();
 	}
 	
-	var geocoder;
-	var map;
-	
 	function initMap() {
+		var myLat;
+		var myLng;
+		var map;
+		var geocoder;
+		
+		//~~~~~Cal, Fill in HERE!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		var usrAddress = "Durham, NC";//<%= user address string here plz %>;
+		
+		//This big ugly string is for testing, swap it for the line commented out below
+		var events = JSON.parse('['
+		+ '{"title":"EventID 1","MarkerID":5,"lat":35.651079,"lng":-78.706949,"EventDescription":"Something happened here be safe", "username":"Sophie"},'
+		+ '{"title":"EventID 2","MarkerID":1,"lat":35.779928,"lng":-78.639282,"EventDescription":"test id 2", "username":"Pete"},'
+		+ '{"title":"EventID 3","MarkerID":8,"lat":35.778633,"lng":-78.643008,"EventDescription":"test id 3", "username":"Ricardo"},'
+		+ '{"title":"EventID 4","MarkerID":3,"lat":35.651079,"lng":-78.706949,"EventDescription":"showthing showing", "username":"Susan"},'
+		+ '{"title":"EventID 5","MarkerID":4,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"maybe this time", "username":"Kendra"},'
+		+ '{"title":"EventID 6","MarkerID":5,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"maybe this time", "username":"Edna"},'
+		+ '{"title":"EventID 7","MarkerID":6,"lat":35.7735709,"lng":-78.676003900000012,"EventDescription":"see if this works", "username":"Marley"},'
+		+ '{"title":"EventID 8","MarkerID":7,"lat":35.7735709,"lng":-78.676003900000012,"EventDescription":"see if this works", "username":"Harley"},'
+		+ '{"title":"EventID 9","MarkerID":2,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"[oahsd[ohasdg[oiihadsgr[pkohadfg;lkhadsfgl;kn", "username":"Farley"},'
+		+ '{"title":"EventID 10","MarkerID":5,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"[oahsd[ohasdg[oiihadsgr[pkohadfg;lkhadsfgl;kn", "username":"Charlie"},'
+		+ '{"title":"EventID 11","MarkerID":6,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"[oahsd[ohasdg[oiihadsgr[pkohadfg;lkhadsfgl;kn", "username":"Tarley"}'
+		+ ']');
+		
+		//(<%= your arraylist.toString here plz %>);
+		//PS Don't forget to plug our API code back in at the bottom
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
 		geocoder = new google.maps.Geocoder();
-		var center = codeAddress(); 
-		map = new google.maps.Map(document.getElementById('map-canvas'), {
-			center: {
-				lat:35.6507,
-				lng:78.7041
-			},
-			zoom: 15
-		});
-	}
-	
-	function codeAddress() {
-		var address = 'Wake Tech'; //user address string  from db here
-	
-		geocoder.geocode({
-			'address': address
-		}, function (results, status) {
-	
+		
+		//get lat and long of user address
+		geocoder.geocode({ 'address': usrAddress }, function (results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-	
-				// Center map on location
-				map.setCenter(results[0].geometry.location);
-	
-				// Add marker on location
-				var marker = new google.maps.Marker({
-					map: map,
-					position: results[0].geometry.location
-				});
-	
+				
+				myLat = results[0].geometry.location.lat();
+				myLng = results[0].geometry.location.lng();
+				
+				var mapOptions = { //user address = map center
+					center: new google.maps.LatLng(myLat, myLng),
+					zoom: 15
+				}
+				
+				//put the map
+				map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+				alert("Testing event data transcription:" 
+						+ "\nShould be:\n'39.6392566'\n" + events[10].lat
+						+ "\nThere should be 11 entries in 'events'"
+						+ "\nWe have: " + events.length);
+				
+				//loop through json object
+				var markers = [];
+				var infowindows = [];
+				for (var i = 0; i  < events.length; i++) 
+				{
+					var data = events[i];
+					var mapIconBase = "images/map_icons/";
+					var mapIconURL;
+					var catName;
+					
+					//set up category names and icon urls
+					switch(data.MarkerID) {
+						
+						case 1:
+							mapIconURL = mapIconBase + "assault.png";
+							catName = "Assault/Violence";
+							break;
+						case 2:
+							mapIconURL = mapIconBase + "robbery.png";
+							catName = "Break-In";
+							break;
+						case 3: 
+							mapIconURL = mapIconBase + "theft.png";
+							catName = "Robbery/Theft";
+							break;
+						case 4:
+							mapIconURL = mapIconBase + "fire.png";
+							catName = "Arson";
+							break;
+						case 5:
+							mapIconURL = mapIconBase + "paint.png";
+							catName = "Vandalism";
+							break;
+						case 6:
+							mapIconURL = mapIconBase + "shooting.png";
+							catName = "Shooting";
+							break;
+						case 7:
+							mapIconURL = mapIconBase + "bomb.png";
+							catName = "Explosives/Bombing";
+							break;
+						case 8:
+							mapIconURL = mapIconBase + "weird.png";
+							catName = "Suspicious Activity";
+							break;
+					}
+					
+					//create marker for each event	
+					markers[i] = new google.maps.Marker({
+						position: {lat: data.lat, lng: data.lng},
+						map: map,
+						id: data.title,
+						categoryID: data.MarkerID,
+						categoryName: catName,
+						icon: mapIconURL,
+						//priority: data.priorityLevelID,
+						details: data.EventDescription,
+						user: data.username
+						//date: data.date
+					});
+					
+					markers[i].index = i;
+					
+					//html for infowindows
+					var contentString = ("<div><h5>" + markers[i].categoryName + " Reported Here</h5>Event details:<br>" + markers[i].details
+										+ "<br><br> logged by: " + markers[i].user + "</div>");
+					
+					//create infowindows
+					infowindows[i] = new google.maps.InfoWindow({
+						content: contentString
+					});
+					
+					//show infowindows on click
+					google.maps.event.addListener(markers[i], 'click', function() {
+						infowindows[this.index].open(map, markers[this.index]);
+					});
+				}
 			} else {
-	
+			
 				alert("Geocode was not successful for the following reason: " + status);
 			}
-		});
+		});	
 	}
 	
+//address field autocomplete for new event form
 	var placeSearch, autocomplete;
 	
 	function initAutocomplete() {
@@ -315,12 +409,14 @@ if(cookies !=null){
 		autocomplete.addListener('place_changed', getAddressData);
 	}
 	
+	//finds the coords of the chosen place
 	function getAddressData() {
 		var place = autocomplete.getPlace();
 		document.getElementById('address-lat').value = (place.geometry.location.lat());
 		document.getElementById('address-lng').value = (place.geometry.location.lng());
 	}
 	
+	//asks for user's location to suggest places
 	function geolocate() {
 		if (navigator.geolocation) {
 		  navigator.geolocation.getCurrentPosition(function(position) {
@@ -336,7 +432,7 @@ if(cookies !=null){
 		  });
 		}
 	}
-    </script>
+</script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initialize&libraries=places" 
 	async defer></script>
 
