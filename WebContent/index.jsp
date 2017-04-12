@@ -47,9 +47,152 @@ if(cookies !=null){
     </nav>
     <!-- InstanceBeginEditable name="main" -->
     <div id="main-content">
+    	
         <div id="map-canvas">
         </div>
+        <div id="filter-containter">
+        	<h4>Filter Events</h4>
+        	<span class="filter-set" id="prio-filter" onchange="filterMarkers()">
+            	<h5>Priority Level</h5>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="p-level1" value="0" name="priority">
+                    One
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="p-level2" value="1" name="priority">
+                    Two
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="p-level3" value="2" name="priority">
+                    Three
+                  </label>
+                </div>
+            </span>
+            <span class="filter-set" id="cat-filter" onchange="filterMarkers()">
+            	<h5>Category</h5>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cat1" value="1" name="category">
+                    Assault/Violence
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cat2" value="2" name="category">
+                    Break-in
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cat3" value="3" name="category">
+                    Robbery
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cat4" value="4" name="category">
+                    Arson
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cat5" value="5" name="category">
+                    Vandalism
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cat6" value="6" name="category">
+                    Active Shooter
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cat7" value="7" name="category">
+                    Explosion
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="cat8" value="8" name="category">
+                    Suspicious Activity
+                  </label>
+                </div>
+            </span>
+            <span class="filter-set" id="time-filter" onchange="filterMarkers()">
+            	<h5>Time Frame</h5>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="time-radios1" value="1" name="time">
+                    Today
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="time-radios2" value="2" name="time">
+                    This Week
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="time-radios3" value="3" name="time">
+                    This Month
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="time-radios4" value="4" name="time">
+                    This Year
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="time-radios5" value="5" name="time" checked="checked">
+                    Any Time
+                  </label>
+                </div>
+            </span>
+            <span class="filter-set" id="prox-filter" onchange="filterMarkers()">
+            	<h5>Proximity to Home</h5>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="prox-radios1" value="1" name="proximity">
+                    1 Mile Radius
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="prox-radios2" value="2" name="proximity">
+                    5 Mile Radius
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="prox-radios3" value="3" name="proximity">
+                    10 Mile Radius
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="prox-radios4" value="4" name="proximity">
+                    25 Mile Radius
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="prox-radios5" value="5" name="proximity" checked="checked">
+                    Any Proximity
+                  </label>
+                </div>
+            </span>
+        </div>
     </div>
+    
     <%@ page import="community.objects.Event" %> 
     <% 
     java.sql.Connection connect;
@@ -108,6 +251,7 @@ if(cookies !=null){
     catch(ClassNotFoundException c){ c.printStackTrace();}
     catch(java.sql.SQLException s) { s.printStackTrace(); }
     %>
+    
     <aside>
     	<ul class="nav nav-tabs">
         	<li class="active"><a data-toggle="tab" href="#recent">Recent Events</a></li>
@@ -266,28 +410,29 @@ if(cookies !=null){
 	  initAutocomplete();
 	}
 	
+	var map;
+	var markers;
+	var myLat, myLng
+	
 	function initMap() {
-		var myLat;
-		var myLng;
-		var map;
 		var geocoder;
 		
 		//~~~~~Cal, Fill in HERE!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		var usrAddress = "Durham, NC";//<%= user address string here plz %>;
+		var usrAddress = "Raleigh, NC";//<%= user address string here plz %>;
 		
 		//This big ugly string is for testing, swap it for the line commented out below
 		var eventData = JSON.parse('['
-		+ '{"title":"EventID 1","MarkerID":5,"lat":35.651079,"lng":-78.706949,"EventDescription":"Something happened here be safe", "username":"Sophie"},'
-		+ '{"title":"EventID 2","MarkerID":1,"lat":35.779928,"lng":-78.639282,"EventDescription":"test id 2", "username":"Pete"},'
-		+ '{"title":"EventID 3","MarkerID":8,"lat":35.778633,"lng":-78.643008,"EventDescription":"test id 3", "username":"Ricardo"},'
-		+ '{"title":"EventID 4","MarkerID":3,"lat":35.651079,"lng":-78.706949,"EventDescription":"showthing showing", "username":"Susan"},'
-		+ '{"title":"EventID 5","MarkerID":4,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"maybe this time", "username":"Kendra"},'
-		+ '{"title":"EventID 6","MarkerID":5,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"maybe this time", "username":"Edna"},'
-		+ '{"title":"EventID 7","MarkerID":6,"lat":35.7735709,"lng":-78.676003900000012,"EventDescription":"see if this works", "username":"Marley"},'
-		+ '{"title":"EventID 8","MarkerID":7,"lat":35.7735709,"lng":-78.676003900000012,"EventDescription":"see if this works", "username":"Harley"},'
-		+ '{"title":"EventID 9","MarkerID":2,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"[oahsd[ohasdg[oiihadsgr[pkohadfg;lkhadsfgl;kn", "username":"Farley"},'
-		+ '{"title":"EventID 10","MarkerID":5,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"[oahsd[ohasdg[oiihadsgr[pkohadfg;lkhadsfgl;kn", "username":"Charlie"},'
-		+ '{"title":"EventID 11","MarkerID":6,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"[oahsd[ohasdg[oiihadsgr[pkohadfg;lkhadsfgl;kn", "username":"Tarley"}'
+		+ '{"title":"EventID 1","MarkerID":5,"lat":35.651079,"lng":-78.706949,"EventDescription":"Something happened here be safe", "username":"Sophie", "priorityLevelID":1, "date":"04/12/2017"},'
+		+ '{"title":"EventID 2","MarkerID":1,"lat":35.779928,"lng":-78.639282,"EventDescription":"test id 2", "username":"Pete", "priorityLevelID":2, "date":"04/11/2017"},'
+		+ '{"title":"EventID 3","MarkerID":8,"lat":35.778633,"lng":-78.643008,"EventDescription":"test id 3", "username":"Ricardo", "priorityLevelID":1, "date":"04/10/2017"},'
+		+ '{"title":"EventID 4","MarkerID":3,"lat":35.651079,"lng":-78.706949,"EventDescription":"showthing showing", "username":"Susan", "priorityLevelID":3, "date":"04/19/2016"},'
+		+ '{"title":"EventID 5","MarkerID":4,"lat":39.6392566,"lng":-84.226092700000014,"EventDescription":"maybe this time", "username":"Kendra", "priorityLevelID":1, "date":"04/08/2017"},'
+		+ '{"title":"EventID 6","MarkerID":5,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"maybe this time", "username":"Edna", "priorityLevelID":1, "date":"04/07/2017"},'
+		+ '{"title":"EventID 7","MarkerID":6,"lat":35.7735709,"lng":-78.676003900000012,"EventDescription":"see if this works", "username":"Marley", "priorityLevelID":3, "date":"02/06/2017"},'
+		+ '{"title":"EventID 8","MarkerID":7,"lat":35.7735709,"lng":-78.675003900000012,"EventDescription":"see if this works", "username":"Harley", "priorityLevelID":1, "date":"04/05/2017"},'
+		+ '{"title":"EventID 9","MarkerID":2,"lat":39.6392566,"lng":-84.226092700000014,"EventDescription":"[oasfgl;kn", "username":"Farley", "priorityLevelID":2, "date":"04/04/2017"},'
+		+ '{"title":"EventID 10","MarkerID":5,"lat":39.6392566,"lng":-84.227092700000014,"EventDescription":"[oahsfgl;kn", "username":"Charlie", "priorityLevelID":1, "date":"04/03/2017"},'
+		+ '{"title":"EventID 11","MarkerID":6,"lat":39.6392566,"lng":-84.228092700000014,"EventDescription":"[oahadsfgl;kn", "username":"Tarley", "priorityLevelID":1, "date":"03/02/2017"}'
 		+ ']');
 		
 		//(<%= your arraylist.toString here plz %>);
@@ -309,9 +454,13 @@ if(cookies !=null){
 				
 				//put the map
 				map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+				alert("Testing event data transcription:" 
+						+ "\nShould be:\n'39.6392566'\n" + eventData[10].lat
+						+ "\nThere should be 11 entries in 'events'"
+						+ "\nWe have: " + eventData.length);
 				
 				//loop through json object
-				var markers = [];
+				markers = [];
 				var contentStrings = [];
 				var infowindow = new google.maps.InfoWindow({
 					content: ""
@@ -363,18 +512,18 @@ if(cookies !=null){
 					//create marker for each event	
 					markers[i] = new google.maps.Marker({
 						position: {lat: data.lat, lng: data.lng},
+						latlng: new google.maps.LatLng({lat: data.lat, lng: data.lng}),
 						map: map,
 						id: data.title,
 						categoryID: data.MarkerID,
 						categoryName: catName,
 						icon: mapIconURL,
-						//priority: data.priorityLevelID,
+						priority: data.priorityLevelID,
 						details: data.EventDescription,
-						user: data.username
-						//date: data.date
+						user: data.username,
+						date: new Date(data.date),
+						index: i
 					});
-					
-					markers[i].index = i;
 					
 					//html for infowindows
 					contentStrings[i] = ("<div><h5>" + markers[i].categoryName + " Reported Here</h5>Event details:<br>" + markers[i].details
@@ -385,6 +534,8 @@ if(cookies !=null){
 						infowindow.setContent(contentStrings[this.index]);
 						infowindow.open(map, this);
 					});
+					
+					
 				}
 			} else {
 			
@@ -427,8 +578,81 @@ if(cookies !=null){
 		  });
 		}
 	}
+	
+	function filterMarkers() {
+		//collect all elements that hold user filter input
+		var priorityFilters = document.getElementsByName("priority");
+		var categoryFilters = document.getElementsByName("category");
+		var timeFilters = document.getElementsByName("time");
+		var proximityFilters = document.getElementsByName("proximity");
+		
+		//declare & initialize currentDate, without the time data
+		var currentDate = new Date();
+		currentDate.setHours(0);
+		currentDate.setMinutes(0);
+		currentDate.setSeconds(0);
+		currentDate.setMilliseconds(0);
+		
+		//find out if priority/category are being filtered
+		var pChecked = false;
+		var cChecked = false;
+		
+		//pChecked will return true if any priority boxes are checked after loop
+		for (i = 0; i < priorityFilters.length; i++) if (priorityFilters[i].checked) pChecked = true;
+		
+		//cChecked will return true if any category boxes are checked after loop
+		for (i = 0; i < categoryFilters.length; i++) if (categoryFilters[i].checked) cChecked = true;
+		
+		//set visibility of each marker to false
+		for(i = 0; i < markers.length; i++) markers[i].setVisible(false);
+		
+		//requalify markers in this loop, one by one, making sure they match all selected filters 
+		for(i = 0; i < markers.length; i++)
+		{
+			//elapsedDays equals the number of days between 
+			//the current date and the date the current marker was logged
+			var elapsedDays = Math.round((currentDate - markers[i].date)/8.64e+7);
+			
+			//usrAddress holds a LatLng for users home address
+			var usrLatLng = new google.maps.LatLng(myLat, myLng);
+			//markerLatLng holds a LatLng for the current marker's position
+			var markerLatLng = markers[i].latlng;
+			
+			//distanceFromHome now holds the number of miles between the user's home
+			//and the position of the current marker
+			var distanceFromHome = Math.round((google.maps.geometry.spherical.computeDistanceBetween(usrLatLng, markerLatLng))/1609.34);
+			//TO DO
+			//each marker will need to make it through time and distance constraints
+			//then, if category and/or priority filters apply, each marker will need
+			//to match those as well, or it won't find a setVisible(true) statement
+				
+				//if the elapsed time since the event was logged is less than or
+				//equal to the selected time frame radio button
+				
+				//AND
+				
+				//if the distance to user address is less than or equal to the 
+				//selected proximity radio button
+				
+					//if no priority filter elements are checked
+						//and if no category filter elements are checked
+							//markers[i].setVisible(true);
+						//else 
+							//loop through cats
+							//if a checked cat matches the marker cat
+								//markers[i].setVisible(true);
+					//else if no category filter elements are checked
+						//loop through priority levels
+						//if a checked prio matches the marker prio
+							//markers[i].setVisible(true);
+					//else if priority filter matches and category filter matches
+						//markers[i].setVisible(true);
+				
+			//When you finish the filtering, add a clear filters button	
+		}
+	}
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initialize&libraries=places" 
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initialize&libraries=geometry,places" 
 	async defer></script>
 
 <!-- InstanceEndEditable -->
