@@ -56,19 +56,19 @@ if(cookies !=null){
             	<h5>Priority Level</h5>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" id="p-level1" value="0" name="priority">
+                    <input type="checkbox" id="p-level1" value="1" name="priority">
                     One
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" id="p-level2" value="1" name="priority">
+                    <input type="checkbox" id="p-level2" value="2" name="priority">
                     Two
                   </label>
                 </div>
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" id="p-level3" value="2" name="priority">
+                    <input type="checkbox" id="p-level3" value="3" name="priority">
                     Three
                   </label>
                 </div>
@@ -128,37 +128,43 @@ if(cookies !=null){
             	<h5>Time Frame</h5>
                 <div class="radio">
                   <label>
+                    <input type="radio" id="time-radios5" value="0" name="time" checked="checked">
+                    Any Time
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
                     <input type="radio" id="time-radios1" value="1" name="time">
                     Today
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" id="time-radios2" value="2" name="time">
-                    This Week
+                    <input type="radio" id="time-radios2" value="7" name="time">
+                    Past 7 Days
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" id="time-radios3" value="3" name="time">
-                    This Month
+                    <input type="radio" id="time-radios3" value="30" name="time">
+                    Past 30 Days
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" id="time-radios4" value="4" name="time">
-                    This Year
-                  </label>
-                </div>
-                <div class="radio">
-                  <label>
-                    <input type="radio" id="time-radios5" value="5" name="time" checked="checked">
-                    Any Time
+                    <input type="radio" id="time-radios4" value="365" name="time">
+                    Past Year
                   </label>
                 </div>
             </span>
             <span class="filter-set" id="prox-filter" onchange="filterMarkers()">
             	<h5>Proximity to Home</h5>
+                <div class="radio">
+                  <label>
+                    <input type="radio" id="prox-radios5" value="0" name="proximity" checked="checked">
+                    Any Proximity
+                  </label>
+                </div>
                 <div class="radio">
                   <label>
                     <input type="radio" id="prox-radios1" value="1" name="proximity">
@@ -167,28 +173,25 @@ if(cookies !=null){
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" id="prox-radios2" value="2" name="proximity">
+                    <input type="radio" id="prox-radios2" value="5" name="proximity">
                     5 Mile Radius
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" id="prox-radios3" value="3" name="proximity">
+                    <input type="radio" id="prox-radios3" value="10" name="proximity">
                     10 Mile Radius
                   </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" id="prox-radios4" value="4" name="proximity">
+                    <input type="radio" id="prox-radios4" value="25" name="proximity">
                     25 Mile Radius
                   </label>
                 </div>
-                <div class="radio">
-                  <label>
-                    <input type="radio" id="prox-radios5" value="5" name="proximity" checked="checked">
-                    Any Proximity
-                  </label>
-                </div>
+            </span>
+            <span id="clear-filters">
+            	<input type="reset" value="Reset Filters" onClick="resetFilters()">
             </span>
         </div>
     </div>
@@ -575,12 +578,18 @@ if(cookies !=null){
 		}
 	}
 	
+	function resetFilters() {
+		
+		
+		
+	}
+	
 	function filterMarkers() {
 		//collect all elements that hold user filter input
 		var priorityFilters = document.getElementsByName("priority");
 		var categoryFilters = document.getElementsByName("category");
-		var timeFilters = document.getElementsByName("time");
-		var proximityFilters = document.getElementsByName("proximity");
+		var timeFilter = document.getElementsByName("time");
+		var proximityFilter = document.getElementsByName("proximity");
 		
 		//declare & initialize currentDate, without the time data
 		var currentDate = new Date();
@@ -592,17 +601,29 @@ if(cookies !=null){
 		//find out if priority/category are being filtered
 		var pChecked = false;
 		var cChecked = false;
+		var tValue;
+		var pValue;
 		
-		//pChecked will return true if any priority boxes are checked after loop
-		for (i = 0; i < priorityFilters.length; i++) if (priorityFilters[i].checked) pChecked = true;
+		//pChecked will return true after loop if any priority boxes are checked
+		for (i = 0; i < priorityFilters.length; i++) 
+			if (priorityFilters[i].checked) pChecked = true;
 		
-		//cChecked will return true if any category boxes are checked after loop
-		for (i = 0; i < categoryFilters.length; i++) if (categoryFilters[i].checked) cChecked = true;
+		//cChecked will return true after loop if any category boxes are checked
+		for (i = 0; i < categoryFilters.length; i++) 
+			if (categoryFilters[i].checked) cChecked = true;
+		
+		//find out which time frame is selected
+		for (i = 0; i < timeFilter.length; i++)
+			if (timeFilter[i].checked) tValue = timeFilter[i].value;
+
+		//find out which proximity is selected
+		for (i = 0; i < proximityFilter.length; i++) 
+			if (proximityFilter[i].checked) pValue = proximityFilter[i].value;
 		
 		//set visibility of each marker to false
 		for(i = 0; i < markers.length; i++) markers[i].setVisible(false);
 		
-		//requalify markers in this loop, one by one, making sure they match all selected filters 
+		//requalify markers via this loop, one by one, making sure they match all selected filters 
 		for(i = 0; i < markers.length; i++)
 		{
 			//elapsedDays equals the number of days between 
@@ -611,40 +632,51 @@ if(cookies !=null){
 			
 			//usrAddress holds a LatLng for users home address
 			var usrLatLng = new google.maps.LatLng(myLat, myLng);
+			
 			//markerLatLng holds a LatLng for the current marker's position
 			var markerLatLng = markers[i].latlng;
 			
 			//distanceFromHome now holds the number of miles between the user's home
 			//and the position of the current marker
-			var distanceFromHome = Math.round((google.maps.geometry.spherical.computeDistanceBetween(usrLatLng, markerLatLng))/1609.34);
-			//TO DO
+			var distanceFromHome = Math.round((google.maps.geometry.spherical
+											.computeDistanceBetween(usrLatLng, markerLatLng))/1609.34);								
 			//each marker will need to make it through time and distance constraints
 			//then, if category and/or priority filters apply, each marker will need
 			//to match those as well, or it won't find a setVisible(true) statement
 				
-				//if the elapsed time since the event was logged is less than or
-				//equal to the selected time frame radio button
-				
-				//AND
-				
-				//if the distance to user address is less than or equal to the 
-				//selected proximity radio button
-				
-					//if no priority filter elements are checked
-						//and if no category filter elements are checked
-							//markers[i].setVisible(true);
-						//else 
-							//loop through cats
-							//if a checked cat matches the marker cat
-								//markers[i].setVisible(true);
-					//else if no category filter elements are checked
-						//loop through priority levels
-						//if a checked prio matches the marker prio
-							//markers[i].setVisible(true);
-					//else if priority filter matches and category filter matches
-						//markers[i].setVisible(true);
-				
-			//When you finish the filtering, add a clear filters button	
+			//if the elapsed time since the event was logged is less than
+			//or equal to the selected time frame radio button
+			if ((tValue == 0) || (elapsedDays <= tValue))
+			{
+				//and if the distance to user address is less than or equal 
+				//to the selected proximity radio button
+				if ((pValue == 0) || (distanceFromHome <= pValue))
+				{
+					//and if no priority filter elements are checked
+					if (!pChecked)
+					{
+						//and if no category filter elements are checked either
+						//set current marker to visible
+						if (!cChecked) markers[i].setVisible(true);
+						
+						//else we need to filter by category before doing so
+						else if (categoryFilters[markers[i].categoryID - 1].checked) markers[i].setVisible(true);
+					}
+					//else there's a priority check for us to do 
+					else
+					{
+						//if there's no category filter
+						if (!cChecked)
+						{
+							//just check the priority level and make the marker visible if they match
+							if (priorityFilters[markers[i].priority - 1].checked) markers[i].setVisible(true);
+						}
+						//else we need to filter by category AND priority
+						else if ((priorityFilters[markers[i].priority - 1].checked) 
+								&& (categoryFilters[markers[i].categoryID - 1].checked)) markers[i].setVisible(true);
+					}
+				}
+			}	
 		}
 	}
 </script>
