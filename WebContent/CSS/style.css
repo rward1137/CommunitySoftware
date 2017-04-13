@@ -35,7 +35,6 @@ nav {
 	height: 28px;
 	list-style: none;
 	background-color:#393939;
-	padding-top: 5px;
 	text-align: center;
 }
 
@@ -44,12 +43,13 @@ nav ul {
 	padding: 0px;
 	margin: auto;
 	list-style-type: none;
+	padding-top: 2px;
 }
 
 nav li {
 	display:inline;
-	margin-left:45px;
-	margin-right:45px;
+	margin-left:30px;
+	margin-right:30px;
 }
 
 nav a {
@@ -57,11 +57,12 @@ nav a {
 	color: #C3CE62;
 	text-align: center;
 	text-decoration: none;
-	z-index: 999;
+	font-size:16px;
 }
 
 nav a:hover {
 	color:#717171;
+	text-decoration:none;
 }
 
 #content {
