@@ -79,16 +79,15 @@ nav a:hover {
 #main-content {
 	margin: 5px;
 	width: 515px;
-	height: 355px;
+	min-height: 559px;
 	overflow: hidden;
 	text-align: center;
-	position: absolute;
 	float: left;
 }
 
 #map-canvas {
-	width: 100%;
-	height: 100%;
+	width: 515px;
+	height: 355px;
 }
 
 aside {
@@ -264,4 +263,37 @@ footer a:hover {
 
 #recent-events .panel-body {
 	font-size: x-small;
+}
+
+#filter-containter {
+	margin: 2px;
+	height: 230px;
+	width: 515px;
+	text-align: center;
+}
+
+.filter-set {
+	text-align: left;
+	float: left;
+	margin-right: 5px;
+}
+
+#prio-filter {
+	width: 95px;
+	
+}
+
+.filter-set .checkbox, .filter-set .radio {
+	margin: 0px;
+	margin-left: 19px;
+}
+
+.filter-set h5 {
+	margin-left: 5px;
+	text-align:center;
+}
+
+#clear-filters {
+	margin-top: 20px;
+	display:inline-block;
 }
