@@ -196,7 +196,7 @@ if(cookies !=null){
         </div>
     </div>
     
-    <%@ page import="community.objects.Event" %> 
+        <%@ page import="community.objects.Event" %> 
     <% 
     java.sql.Connection connect;
     java.sql.Statement stmt;
@@ -578,18 +578,28 @@ if(cookies !=null){
 		}
 	}
 	
+	//collect all elements that hold user filter input
+	var priorityFilters = document.getElementsByName("priority");
+	var categoryFilters = document.getElementsByName("category");
+	var timeFilter = document.getElementsByName("time");
+	var proximityFilter = document.getElementsByName("proximity");
+	
 	function resetFilters() {
 		
+		for (i = 0; i < priorityFilters.length; i++) 
+			priorityFilters[i].checked = false;
+			
+		for (i = 0; i < categoryFilters.length; i++) 
+			categoryFilters[i].checked = false;
+			
+		timeFilter[0].checked = true;
 		
+		proximityFilter[0].checked = true;
 		
 	}
 	
 	function filterMarkers() {
-		//collect all elements that hold user filter input
-		var priorityFilters = document.getElementsByName("priority");
-		var categoryFilters = document.getElementsByName("category");
-		var timeFilter = document.getElementsByName("time");
-		var proximityFilter = document.getElementsByName("proximity");
+		
 		
 		//declare & initialize currentDate, without the time data
 		var currentDate = new Date();
