@@ -56,6 +56,10 @@ nav.navbar {
 	min-height:45px;
 }
 
+ul.navbar-nav.mr-auto {
+	margin-top:35px;
+}
+
 #content {
 	min-height: 400px;
 	overflow: hidden;
@@ -75,6 +79,7 @@ nav.navbar {
 #aside {
 	background-color: #fff;
 	font-size: 12px;
+	padding-bottom:10px;
 }
 
 #map-canvas {
@@ -147,6 +152,11 @@ nav.navbar {
 	color:#C3CE62;
 }
 
+#filter-toggle-link:hover {
+	color:#E5FC6F;
+	text-decoration:none;
+}
+
 #filter-heading {
 	background-color: #3A3A3A;
 	font-size:14px;
@@ -183,7 +193,7 @@ nav.navbar {
 
 .card-block {
 	padding:0px;
-	margin-bottom:5px;
+	margin:5px;
 }
 
 div .radio, div .checkbox {
