@@ -23,53 +23,71 @@ public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
+	
+	// Database objects
 	private Connection connect;
 	private Statement stmt;
 	private ResultSet result;
-	private String username;
-	private String password;
+	
+	// User info
+	private String username, password, datapwd;
 	private boolean validUser;
 	
+	// 3rd party encryption
 	private BasicPasswordEncryptor passencrypt;
 	
+	/**
+	 * HttpServlet#doPost
+	 * Attempts to validate a username/password combination
+	 * Redirects to homepage if valid
+	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
+		// Flag for later redirect
 		validUser = false;
+		
+		// Get info
 		username = request.getParameter("username"); 
 		password = request.getParameter("password");
 		passencrypt = new BasicPasswordEncryptor();
 
-		try {
+		try { 	// Database connection
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			connect = DriverManager.getConnection("jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=CommunitySoftware;IntegratedSecurity=true;");
+			connect = DriverManager.getConnection("jdbc:sqlserver://waketechcommunitywatchsqlvm000001.database.windows.net;databaseName=WAKETECHCOMMUNITYWATCHDB000001;user=communitywatchadmin;password=WakeTech2018;");
 			stmt = connect.createStatement();
-			result = stmt.executeQuery("select UserPassword from Users where UserName = \'" + username + "\'");
 			
+			// Check password from database
+			result = stmt.executeQuery("select Password from Users where UserName = \'" + username + "\'");
 			while (result.next()) {
-				String datapwd = result.getString("UserPassword");
+				datapwd = result.getString("Password");
+				// BasicPasswordEncryptor checks it against plaintext password
 				if (passencrypt.checkPassword(password, datapwd)) validUser = true;
-			}
-			
-			if (validUser) {
-				HttpSession session = request.getSession();
-				session.setAttribute("user", username);
-				//setting session to expire in 30 minutes
-				session.setMaxInactiveInterval(30*60);
-				Cookie loginCookie = new Cookie("user", username);
-				//setting cookie to expire in 30 minutes
-				loginCookie.setMaxAge(30*60);
-				response.addCookie(loginCookie);
-				response.sendRedirect("index.jsp");
-			}
-			else {
-				RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
-				PrintWriter out= response.getWriter();
-				out.println("<font color=pink>login credentials are wack</font>");
-				rd.include(request, response);
 			}
 		}
 		catch (SQLException s) { s.printStackTrace(); }
 		catch (ClassNotFoundException c) { c.printStackTrace(); }
+		
+		// Redirect based on credentials
+		// VALID
+		if (validUser) 
+		{
+			// Get session, create Cookie object
+			HttpSession session = request.getSession();
+			session.setAttribute("user", username);
+			session.setMaxInactiveInterval(60*60); // Logged out after an hour
+			Cookie loginCookie = new Cookie("user", username);
+			loginCookie.setMaxAge(60*60); // Expires in an hour
+			response.addCookie(loginCookie);
+			response.sendRedirect("index.jsp"); // Redirect to homepage
+		}
+		// INVALID
+		else 
+		{
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
+			PrintWriter out= response.getWriter();
+			out.println("<font color=white>Either username or password is incorrect</font>");
+			rd.include(request, response); // Back to login page
+		}
 	}
 }

@@ -1,44 +1,43 @@
 package community.objects;
 
 public class Post {
+	// Post details
+	private String subject, content;
 	private int postID;
-	private String subject;
-	private String content;
-	private String createdOn;
-	private String createdTime;
-	private int userID;
+	// Date & Time
+	private String createdOn, createdTime;
+	// User Details
 	private String username;
-	private int statusID;
+	private int userID, statusID;
 	
+	// CONSTRUCTOR
 	public Post() {}
 	
-	public Post(int id, String about, String contents, String created, String createdT,
-			 int userID, String user, int status) {
-		postID = id;
-		subject = about;
-		content = contents;
-		createdOn = created;
-		createdTime = createdT;
-		this.userID = userID;
-		username = user;
-		statusID = status;
-	}
-	
+	// SET POST DETAILS
+	public void setSubject(String subj) { subject = subj; }	
+	public void setContent(String cont) { content = cont; }	
 	public void setID(int id) { postID = id; }
+	
+	// GET POST DETAILS
+	public String getSubject() { return subject; }
+	public String getContent() { return content; }	
 	public int getID() { return postID; }
-	public void setDate(String date) { createdOn = date; }
-	public String createdOn() { return createdOn; }
+	
+	// SET DATE & TIME
+	public void setDate(String date) { createdOn = date; }	
 	public void setTime(String time) { createdTime = time; }
+	
+	// GET DATE & TIME
+	public String createdOn() { return createdOn; }
 	public String createdAt() { return createdTime; }
-	public void setStatus(int id) { statusID = id; }
-	public int getStatus() { return statusID; }
+	
+	// SET USER DETAILS
 	public void setUser(int id) { userID = id; }
-	public void setUsername(String user) { username = user; }
+	public void setUsername(String user) { username = user; }	
+	public void setStatus(int id) { statusID = id; }
+	
+	// GET USER DETAILS
 	public int getUserID() { return userID; }
 	public String createdBy() { return username; }
-	public void setSubject(String subj) { subject = subj; }
-	public String getSubject() { return subject; }
-	public void setContent(String cont) { content = cont; }
-	public String getContent() { return content; }
-	public String fullPost() { return (subject + ": " + content); }
+	public int getStatus() { return statusID; }
 }

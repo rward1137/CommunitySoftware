@@ -1,4 +1,4 @@
-<doctype=html>
+<!doctype=html>
 <html><!-- InstanceBegin template="/Templates/prelogin.dwt" codeOutsideHTMLIsLocked="false" -->
     <head>
         <meta charset="utf-8">
@@ -58,13 +58,13 @@
                             <label>Choose Username: </label>
                             <input type="text" name="username" /><br>
                             <label>Choose Password: </label>
-                            <input type="password" name="password" /><br>
+                            <input type="password" name="password1" /><br>
                             <label>Confirm Password: </label>
-                            <input type="password" name="password" /><br>
+                            <input type="password" name="password2" /><br>
                             <label>Email Address: </label>
                             <input type="email" name="email" /><br>
                             <label>Home Address: </label> 
-                            <input id="autocomplete" placeholder="Enter your address"
+                            <input id="autocomplete" name="address" placeholder="Enter your address"
                              onFocus="geolocate()" type="text" ></input><br>
                             <input type="text" id="address-lat" hidden="true"/>
                             <input type="text" id="address-lng" hidden="true"/>
@@ -127,7 +127,7 @@
 	}
   } 
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete"
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4FYJZ396Xk6RYTy5963wl9pVsB0N5g5w&libraries=places&callback=initAutocomplete"
         async defer></script>
 <!-- InstanceEndEditable -->
 
