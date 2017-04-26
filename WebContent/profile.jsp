@@ -13,23 +13,7 @@
         <script src="bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
-
-<%
-//allow access only if session exists
-if(session.getAttribute("user") == null){
-	response.sendRedirect("login.jsp");
-}
-String userName = null;
-String sessionID = null;
-Cookie[] cookies = request.getCookies();
-if(cookies != null){
-	for(Cookie cookie : cookies){
-		if(cookie.getName().equals("user")) userName = cookie.getValue();
-	}
-}
-%>
-
- <div class="container">
+        <div class="container">
             <div class="row no-gutters" id="header">
                 <div class="col-auto">
                     <img id="headlogo" src="images/logo.jpg" alt="community software logo"/>
@@ -52,13 +36,13 @@ if(cookies != null){
                         <div class="collapse navbar-collapse" id="navbar-collapse-1">
                           <ul class="navbar-nav mr-auto">
                             <li class="nav-item active">
-                            	<a class="nav-link" href="index.jsp">Event Log</a>
+                            	<a class="nav-link" href="index.jps">Event Log</a>
                             </li>
                             <li class="nav-item">
-                            	<a class="nav-link" href="bulletinboard.jsp">Bulletin Board</a>
+                            	<a class="nav-link" href="bulletinboard.html">Bulletin Board</a>
                             </li>
                             <li class="nav-item">
-                            	<a class="nav-link" href="profile.jsp">Account</a>
+                            	<a class="nav-link" href="profile.html">Account</a>
                             </li>
                             <li class="nav-item">
                             	<a class="nav-link" href="LogoutServlet">Logout</a>
@@ -68,45 +52,10 @@ if(cookies != null){
                     </nav>
                 </div><!-- /.col -->
             </div><!-- /.row -->
-    
-    <%
-    // Community Name
-    // Full Name
-    // Username
-    // Address
- 	java.sql.Connection connect;
-	java.sql.Statement stmt;
-	java.sql.ResultSet result;
-	java.sql.PreparedStatement prep;
-	String organization = "";
-	int organizationID = 0;
-	String firstname = "", lastname = "", address = "";
-	
-	try {
-		Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		connect = java.sql.DriverManager.getConnection("jdbc:sqlserver://waketechcommunitywatchsqlvm000001.database.windows.net;databaseName=WAKETECHCOMMUNITYWATCHDB000001;user=communitywatchadmin;password=WakeTech2018;");
-		stmt = connect.createStatement();
-		
-		result = stmt.executeQuery("select FirstName, LastName, OrganizationID, Address from Users where Username = \'" 
-											+ userName + "\'");
-		while (result.next()) {
-			organizationID = Integer.parseInt(result.getString("organizationID"));
-			firstname = result.getString("FirstName");
-			lastname = result.getString("LastName");
-			address = result.getString("Address");
-		}
-		
-		result = stmt.executeQuery("select OrganizationName from Organizations where ID = " + organizationID);
-		while (result.next()) organization = result.getString("OrganizationName");
-		
-		
-	}
-	catch (ClassNotFoundException c) { c.printStackTrace(); }
-    
-    %>
-    
+        	
             <div class="row no-gutters" id="content">
             <!-- InstanceBeginEditable name="main" -->
+            
             
             <div class="col" id="main-content">
                 <div id="user-info"><br>
@@ -115,27 +64,27 @@ if(cookies != null){
                       <tbody>
                         <tr>
                             <td><h5>Community:</h5></td>
-                            <td><%= organization %></td>
+                            <td>Community name here</td>
                         </tr>
                         <tr>
                           <td><h5>Full Name:</h5></td>
-                          <td><%= firstname + " " + lastname %></td>
+                          <td>First and Last name here</td>
                         </tr>
                         <tr>
                           <td><h5>Username:</h5></td>
-                          <td><%= userName %></td>
+                          <td>User name here</td>
                         </tr>
                         <tr>
                           <td><h5>Address:</h5></td>
-                          <td><%= address %></td>
+                          <td>Address String here</td>
                         </tr>
                         <tr>
                           <td><h5>Update Password:</h5></td>
                           <td>
-                            <form id="change-password" action="PasswordServlet" method="post">
-                                <label>Current Password:</label><input type="password" name="oldpassword">
-                                <label>New Password:</label><input type="password" name="newpassword1">
-                                <label>Confirm Password:</label><input type="password" name="newpassword2">
+                            <form id="change-password">
+                                <label>Current Password:</label><input type="password">
+                                <label>New Password:</label><input type="password">
+                                <label>Confirm Password:</label><input type="password">
                                 <input type="submit" id="password-button">
                             </form>
                           </td>
