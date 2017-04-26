@@ -56,6 +56,10 @@ nav.navbar {
 	min-height:45px;
 }
 
+ul.navbar-nav.mr-auto {
+	margin-top:35px;
+}
+
 #content {
 	min-height: 400px;
 	overflow: hidden;
@@ -75,6 +79,7 @@ nav.navbar {
 #aside {
 	background-color: #fff;
 	font-size: 12px;
+	padding-bottom:10px;
 }
 
 #map-canvas {
@@ -124,17 +129,34 @@ nav.navbar {
 	margin-left:auto;
 }
 
-#change-password label {
-	margin-top:4px;
-	margin-bottom: 2px;
-	width: 150px;
-	text-align:right;
-	float: left;
+form#reg, form#log{
+	text-align:left;
+	padding-top: 10px;
+	margin-right: auto;
+	margin-left: auto;
+	max-width:425px;
 }
 
-#change-password input{
+#change-password label, #log label, #register label {
+	margin-top: 5px;
+	margin-bottom: 2px;
+	margin-right: 5px;
+	width: 120px;
+	text-align:right;
+}
+
+#change-password input, #log input, #register input {
 	margin-top: 2px;
 	margin-bottom: 2px;
+	clear:right;
+}
+
+div#register.tab-pane, div#login.tab-pane {
+	min-height:300px;
+}
+
+input#logbutton, input#regbutton {
+	margin-left:45%;
 }
 
 #user-info {
@@ -145,6 +167,11 @@ nav.navbar {
 
 #filter-toggle-link {
 	color:#C3CE62;
+}
+
+#filter-toggle-link:hover {
+	color:#E5FC6F;
+	text-decoration:none;
 }
 
 #filter-heading {
@@ -183,7 +210,7 @@ nav.navbar {
 
 .card-block {
 	padding:0px;
-	margin-bottom:5px;
+	margin:5px;
 }
 
 div .radio, div .checkbox {
@@ -214,9 +241,4 @@ ul.nav.nav-tabs li.nav-item a {
 div#new-bulletin h5 {
 	margin-top:15px;
 	margin-bottom:15px;
-}
-
-form#reg, form#log{
-	text-align:center;
-	padding-top: 10px;
 }
