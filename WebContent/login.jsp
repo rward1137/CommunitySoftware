@@ -31,15 +31,15 @@
     		<div class="col">
                 <div id="formbox">
                     <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item">
-                        	<a class="nav-link" data-toggle="tab" href="#login" role="tab">Login</a>
+                        <li class="nav-item"><!--changed login tab to active-->
+                        	<a class="nav-link active" data-toggle="tab" href="#login" role="tab">Login</a>
                         </li>
                         <li class="nav-item">
-                        	<a class="nav-link active" data-toggle="tab" href="#register" role="tab">Register</a>
+                        	<a class="nav-link" data-toggle="tab" href="#register" role="tab">Register</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane" id="login">
+                        <div class="tab-pane active" id="login">
                             <form action="LoginServlet" method="post" id="log">
                             <label>Username: </label>
                             <input type="text" name="username"/><br>
@@ -48,13 +48,13 @@
                             <input type="submit" value="Login" id="logbutton"/>
                             </form>
                         </div>
-                        <div class="tab-pane active" id="register">
+                        <div class="tab-pane" id="register">
                             <form action="RegisterServlet" method="post" id="reg">
                             <label>Full Name: </label>
                             <input type="text" name="first" class="nameinput" placeholder="First" />
                             <input type="text" name="last" class="nameinput" placeholder="Last" /><br>
                             <label>Community ID: </label>
-                            <input type="text" name="communityID" placeholder="(943940 - Wake Tech ID)" /><br>
+                            <input type="text" name="communityID" placeholder="Wake Tech ID" style="width: 200px;"/><br>
                             <label>Choose Username: </label>
                             <input type="text" name="username" /><br>
                             <label>Choose Password: </label>
@@ -62,13 +62,14 @@
                             <label>Confirm Password: </label>
                             <input type="password" name="password2" /><br>
                             <label>Email Address: </label>
-                            <input type="email" name="email" /><br>
+                            <input type="email" name="email" style="width:200px;"/><br>
                             <label>Home Address: </label> 
                             <input id="autocomplete" name="address" placeholder="Enter your address"
                              onFocus="geolocate()" type="text" ></input><br>
+                            <input type="submit" value="Register" id="regbutton"/><br>
                             <input type="text" id="address-lat" hidden="true"/>
                             <input type="text" id="address-lng" hidden="true"/>
-                            <input type="submit" value="Register" id="regbutton"/>
+                            
                             </form>  
                         </div> <!-- /#tab-pane fade --> 
                     </div> <!-- /#tab-content --> 
